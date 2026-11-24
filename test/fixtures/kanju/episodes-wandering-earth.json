@@ -1,0 +1,35 @@
+{
+ "object": "catalog.episodes",
+ "variant_id": "av_FAKE_CARD_039",
+ "title": "流浪地球",
+ "content_kind": "movie",
+ "episode_count": 2,
+ "available_episode_count": 2,
+ "episode_pagination": {
+  "offset": 0,
+  "limit": 100,
+  "returned_count": 2,
+  "total_count": 2,
+  "has_more": false
+ },
+ "episodes": [
+  {
+   "id": "av_FAKE_MOVIE_EPISODE_ID_1",
+   "episode_track": "main",
+   "key": "main",
+   "title": "正片",
+   "token": "av_FAKE_MOVIE_EPISODE_TOKEN_1",
+   "playback_count": 38,
+   "urls": {}
+  },
+  {
+   "id": "av_FAKE_MOVIE_EPISODE_ID_2",
+   "episode_track": "extras",
+   "key": "part-4e41ed0b",
+   "title": "特别版",
+   "token": "av_FAKE_MOVIE_EPISODE_TOKEN_2",
+   "playback_count": 5,
+   "urls": {}
+  }
+ ]
+}

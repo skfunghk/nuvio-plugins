@@ -1,0 +1,124 @@
+{
+ "adult": false,
+ "backdrop_path": null,
+ "belongs_to_collection": null,
+ "budget": 0,
+ "genres": [],
+ "homepage": "",
+ "id": 9000001,
+ "imdb_id": null,
+ "original_language": "zh",
+ "original_title": "The Wandering Earth",
+ "overview": "",
+ "popularity": 1,
+ "poster_path": null,
+ "production_companies": [],
+ "production_countries": [],
+ "release_date": "2019-02-05",
+ "revenue": 0,
+ "runtime": 0,
+ "spoken_languages": [],
+ "status": "Released",
+ "tagline": "",
+ "title": "流浪地球",
+ "video": false,
+ "vote_average": 0,
+ "vote_count": 0,
+ "translations": {
+  "id": 9000001,
+  "translations": [
+   {
+    "iso_3166_1": "US",
+    "iso_639_1": "en",
+    "name": "English",
+    "english_name": "English",
+    "data": {
+     "title": "The Wandering Earth",
+     "overview": null,
+     "homepage": null,
+     "tagline": null
+    }
+   },
+   {
+    "iso_3166_1": "CN",
+    "iso_639_1": "zh",
+    "name": "中文",
+    "english_name": "Mandarin",
+    "data": {
+     "title": "流浪地球",
+     "overview": null,
+     "homepage": null,
+     "tagline": null
+    }
+   },
+   {
+    "iso_3166_1": "TW",
+    "iso_639_1": "zh",
+    "name": "中文",
+    "english_name": "Mandarin",
+    "data": {
+     "title": "流浪地球",
+     "overview": null,
+     "homepage": null,
+     "tagline": null
+    }
+   },
+   {
+    "iso_3166_1": "HK",
+    "iso_639_1": "zh",
+    "name": "中文",
+    "english_name": "Cantonese",
+    "data": {
+     "title": "流浪地球",
+     "overview": null,
+     "homepage": null,
+     "tagline": null
+    }
+   },
+   {
+    "iso_3166_1": "SG",
+    "iso_639_1": "zh",
+    "name": "中文",
+    "english_name": "Mandarin",
+    "data": {
+     "title": "流浪地球",
+     "overview": null,
+     "homepage": null,
+     "tagline": null
+    }
+   },
+   {
+    "iso_3166_1": "JP",
+    "iso_639_1": "ja",
+    "name": "日本語",
+    "english_name": "Japanese",
+    "data": {
+     "title": "流転の地球",
+     "overview": null,
+     "homepage": null,
+     "tagline": null
+    }
+   }
+  ]
+ },
+ "alternative_titles": {
+  "id": 9000001,
+  "titles": [
+   {
+    "iso_3166_1": "US",
+    "title": "The Wandering Earth",
+    "type": ""
+   },
+   {
+    "iso_3166_1": "CN",
+    "title": "流浪地球",
+    "type": ""
+   },
+   {
+    "iso_3166_1": "TW",
+    "title": "流浪地球",
+    "type": ""
+   }
+  ]
+ }
+}

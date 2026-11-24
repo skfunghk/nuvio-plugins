@@ -1,0 +1,117 @@
+{
+ "object": "catalog.episodes",
+ "variant_id": "av_FAKE_CARD_001",
+ "title": "权力的游戏 第1季",
+ "content_kind": "series",
+ "episode_count": 10,
+ "available_episode_count": 10,
+ "episode_pagination": {
+  "offset": 0,
+  "limit": 100,
+  "returned_count": 10,
+  "total_count": 10,
+  "has_more": false
+ },
+ "episodes": [
+  {
+   "id": "av_FAKE_EPISODE_ID_1",
+   "number": 1,
+   "episode_track": "main",
+   "key": "e-0001",
+   "title": "第1集",
+   "token": "av_FAKE_EPISODE_TOKEN_1",
+   "playback_count": 31,
+   "urls": {}
+  },
+  {
+   "id": "av_FAKE_EPISODE_ID_2",
+   "number": 2,
+   "episode_track": "main",
+   "key": "e-0002",
+   "title": "第2集",
+   "token": "av_FAKE_EPISODE_TOKEN_2",
+   "playback_count": 31,
+   "urls": {}
+  },
+  {
+   "id": "av_FAKE_EPISODE_ID_3",
+   "number": 3,
+   "episode_track": "main",
+   "key": "e-0003",
+   "title": "第3集",
+   "token": "av_FAKE_EPISODE_TOKEN_3",
+   "playback_count": 31,
+   "urls": {}
+  },
+  {
+   "id": "av_FAKE_EPISODE_ID_4",
+   "number": 4,
+   "episode_track": "main",
+   "key": "e-0004",
+   "title": "第4集",
+   "token": "av_FAKE_EPISODE_TOKEN_4",
+   "playback_count": 31,
+   "urls": {}
+  },
+  {
+   "id": "av_FAKE_EPISODE_ID_5",
+   "number": 5,
+   "episode_track": "main",
+   "key": "e-0005",
+   "title": "第5集",
+   "token": "av_FAKE_EPISODE_TOKEN_5",
+   "playback_count": 31,
+   "urls": {}
+  },
+  {
+   "id": "av_FAKE_EPISODE_ID_6",
+   "number": 6,
+   "episode_track": "main",
+   "key": "e-0006",
+   "title": "第6集",
+   "token": "av_FAKE_EPISODE_TOKEN_6",
+   "playback_count": 31,
+   "urls": {}
+  },
+  {
+   "id": "av_FAKE_EPISODE_ID_7",
+   "number": 7,
+   "episode_track": "main",
+   "key": "e-0007",
+   "title": "第7集",
+   "token": "av_FAKE_EPISODE_TOKEN_7",
+   "playback_count": 31,
+   "urls": {}
+  },
+  {
+   "id": "av_FAKE_EPISODE_ID_8",
+   "number": 8,
+   "episode_track": "main",
+   "key": "e-0008",
+   "title": "第8集",
+   "token": "av_FAKE_EPISODE_TOKEN_8",
+   "playback_count": 31,
+   "urls": {}
+  },
+  {
+   "id": "av_FAKE_EPISODE_ID_9",
+   "number": 9,
+   "episode_track": "main",
+   "key": "e-0009",
+   "title": "第9集",
+   "token": "av_FAKE_EPISODE_TOKEN_9",
+   "playback_count": 31,
+   "urls": {}
+  },
+  {
+   "id": "av_FAKE_EPISODE_ID_10",
+   "number": 10,
+   "episode_track": "main",
+   "key": "e-0010",
+   "title": "第10集",
+   "token": "av_FAKE_EPISODE_TOKEN_10",
+   "playback_count": 31,
+   "urls": {}
+  }
+ ]
+}

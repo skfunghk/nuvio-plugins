@@ -1,0 +1,700 @@
+{
+ "object": "catalog.browse",
+ "cards": [
+  {
+   "id": "av_FAKE_CARD_059",
+   "work_id": "work:yj:d9e531814da1cf3f98f5",
+   "selected_variant_id": "av_FAKE_CARD_059",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_059",
+     "work_id": "work:yj:d9e531814da1cf3f98f5",
+     "title": "千与千寻",
+     "year": 2001,
+     "has_playback": true,
+     "playback_count": 33,
+     "heat_value": 144.42,
+     "updated_at": "2026-11-06T13:12:54.418Z",
+     "selected": true
+    }
+   ],
+   "title": "千与千寻",
+   "aliases": [
+    "千与千寻的神隐",
+    "千与千寻国语",
+    "千と千寻の神隠し",
+    "千と千尋の神隠し",
+    "神隐少女台",
+    "神隐少女台千与千寻的神隐spiritedawayavoyageofchihirosentochihironokamikakushi",
+    "avoyageofchihiro",
+    "qianyuqianxun",
+    "qianyuqianxun4k",
+    "qianyuqianxunputonghuaban",
+    "sentochihironokamikakushi",
+    "spiritedaway",
+    "千与千寻4K",
+    "千与千寻普通话版"
+   ],
+   "content_kind": "movie",
+   "year": 2001,
+   "area": "日本",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 144.42,
+   "playback_count": 33
+  },
+  {
+   "id": "av_FAKE_CARD_060",
+   "work_id": "work:yj:619bf1639dd3033597df",
+   "selected_variant_id": "av_FAKE_CARD_060",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_060",
+     "work_id": "work:yj:619bf1639dd3033597df",
+     "title": "千与千寻",
+     "year": 2019,
+     "has_playback": true,
+     "playback_count": 4,
+     "heat_value": 68.19,
+     "updated_at": "2026-09-28T17:06:07.566Z",
+     "selected": true
+    }
+   ],
+   "title": "千与千寻",
+   "aliases": [],
+   "content_kind": "movie",
+   "year": 2019,
+   "area": "日本",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 68.19,
+   "playback_count": 4
+  },
+  {
+   "id": "av_FAKE_CARD_061",
+   "work_id": "work:yj:98f1cd9f4ae387846b18",
+   "selected_variant_id": "av_FAKE_CARD_061",
+   "season_count": 2,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_061",
+     "work_id": "work:yj:98f1cd9f4ae387846b18",
+     "title": "久石让在武道馆:与宫崎骏动画一同走过的25年",
+     "year": 2008,
+     "has_playback": true,
+     "playback_count": 1,
+     "heat_value": 33.13,
+     "updated_at": "2026-06-22T13:24:32.471Z",
+     "selected": true
+    },
+    {
+     "variant_id": "av_FAKE_VAR_062",
+     "work_id": "work:yj:98f1cd9f4ae387846b18",
+     "title": "久石让在武道馆:与宫崎骏动画一同走过的25年",
+     "year": 2008,
+     "has_playback": true,
+     "playback_count": 9,
+     "heat_value": 37.25,
+     "updated_at": "2026-11-09T02:40:38.906Z",
+     "selected": false
+    }
+   ],
+   "title": "久石让在武道馆:与宫崎骏动画一同走过的25年",
+   "aliases": [
+    "久石让在武道馆：与宫崎骏动画一同走过的25年"
+   ],
+   "content_kind": "documentary",
+   "year": 2008,
+   "area": "日本",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 33.13,
+   "playback_count": 1
+  },
+  {
+   "id": "av_FAKE_CARD_063",
+   "work_id": "work:yj:8d4099a2c59dab2626ec",
+   "selected_variant_id": "av_FAKE_CARD_063",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_063",
+     "work_id": "work:yj:8d4099a2c59dab2626ec",
+     "title": "宫崎骏:自然之魂",
+     "year": 2024,
+     "has_playback": true,
+     "playback_count": 15,
+     "heat_value": 48.07,
+     "updated_at": "2026-11-15T18:36:40.087Z",
+     "selected": true
+    }
+   ],
+   "title": "宫崎骏:自然之魂",
+   "aliases": [
+    "宫崎骏纪录片",
+    "宫崎骏自然之魂",
+    "宫崎骏自然之魂miyazaki",
+    "gongqijunziranzhihun",
+    "lespritdelanature",
+    "miyazaki",
+    "spiritofnature",
+    "spiritofnaturemiyazaki",
+    "宫崎骏 自然之魂",
+    "宫崎骏：自然之魂"
+   ],
+   "content_kind": "documentary",
+   "year": 2024,
+   "area": "法国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 48.07,
+   "playback_count": 15
+  },
+  {
+   "id": "av_FAKE_CARD_064",
+   "work_id": "work:yj:9e28322252664de567de",
+   "selected_variant_id": "av_FAKE_CARD_064",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_064",
+     "work_id": "work:yj:9e28322252664de567de",
+     "title": "玛丽与魔女之花",
+     "year": 2017,
+     "has_playback": true,
+     "playback_count": 26,
+     "heat_value": 46.87,
+     "updated_at": "2026-11-08T20:40:24.003Z",
+     "selected": true
+    }
+   ],
+   "title": "玛丽与魔女之花",
+   "aliases": [
+    "宫崎骏爱徒新作",
+    "玛丽与魔女之花メアリと魔女の花",
+    "玛莉与魔女之花港",
+    "玛莉与魔女之花港梅莉和魔女的花梅莉与魔女之花梅亚丽与魔女之华maryandthewitch&",
+    "玛莉与魔女之花港梅莉和魔女的花梅莉与魔女之花梅亚丽与魔女之华maryandthewitch&amp",
+    "玛莉与魔女之花港梅莉和魔女的花梅莉与魔女之花梅亚丽与魔女之华maryandthewitch",
+    "梅莉和魔女的花",
+    "梅莉与魔女之花",
+    "梅亚丽与魔女之华",
+    "maliyumonvzhihua",
+    "maliyumonvzhihuaguoyu",
+    "maliyumonvzhihuaputonghua",
+    "maliyumonvzhihuaputonghuaban",
+    "maliyumonvzhihuariyu",
+    "maryandthewitch&#039",
+    "maryandthewitch&"
+   ],
+   "content_kind": "movie",
+   "year": 2017,
+   "area": "日本",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 46.87,
+   "playback_count": 26
+  },
+  {
+   "id": "av_FAKE_CARD_065",
+   "work_id": "work:yj:ded986f6fbe67ff7e4a2",
+   "selected_variant_id": "av_FAKE_CARD_065",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_065",
+     "work_id": "work:yj:ded986f6fbe67ff7e4a2",
+     "title": "雪之女王",
+     "year": 2005,
+     "has_playback": true,
+     "playback_count": 108,
+     "heat_value": 40.42,
+     "updated_at": "2026-10-08T06:28:55.893Z",
+     "selected": true
+    }
+   ],
+   "title": "雪之女王",
+   "aliases": [
+    "雪的女王",
+    "雪の女王",
+    "thesnowqueen",
+    "xuezhinuwang",
+    "xuezhinvwang"
+   ],
+   "content_kind": "anime",
+   "year": 2005,
+   "area": "日本",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 40.42,
+   "playback_count": 108
+  },
+  {
+   "id": "av_FAKE_CARD_066",
+   "work_id": "work:yj:448f23c1c396185392f8",
+   "selected_variant_id": "av_FAKE_CARD_066",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_066",
+     "work_id": "work:yj:448f23c1c396185392f8",
+     "title": "千千问",
+     "year": 2002,
+     "has_playback": true,
+     "playback_count": 372,
+     "heat_value": 52.9,
+     "updated_at": "2026-10-18T14:24:12.245Z",
+     "selected": true
+    }
+   ],
+   "title": "千千问",
+   "aliases": [
+    "qianqianwen"
+   ],
+   "content_kind": "anime",
+   "year": 2002,
+   "area": "中国大陆",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 52.9,
+   "playback_count": 372
+  },
+  {
+   "id": "av_FAKE_CARD_067",
+   "work_id": "work:yj:90a5c757ed11719b7a48",
+   "selected_variant_id": "av_FAKE_CARD_067",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_067",
+     "work_id": "work:yj:90a5c757ed11719b7a48",
+     "title": "千千万万次拯救你",
+     "year": 2023,
+     "has_playback": true,
+     "playback_count": 122,
+     "heat_value": 38.87,
+     "updated_at": "2026-10-22T11:27:06.506Z",
+     "selected": true
+    }
+   ],
+   "title": "千千万万次拯救你",
+   "aliases": [
+    "qianqianwanwancizhengjiuni"
+   ],
+   "content_kind": "short_drama",
+   "year": 2023,
+   "area": "中国大陆",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 38.87,
+   "playback_count": 122
+  },
+  {
+   "id": "av_FAKE_CARD_068",
+   "work_id": "work:yj:0661479f413b3e4bb970",
+   "selected_variant_id": "av_FAKE_CARD_068",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_068",
+     "work_id": "work:yj:0661479f413b3e4bb970",
+     "title": "千千修罗",
+     "year": 2026,
+     "has_playback": true,
+     "playback_count": 1,
+     "heat_value": 52.24,
+     "updated_at": "2026-10-30T11:33:02.685Z",
+     "selected": true
+    }
+   ],
+   "title": "千千修罗",
+   "aliases": [],
+   "content_kind": "short_drama",
+   "year": 2026,
+   "area": "中国大陆",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 52.24,
+   "playback_count": 1
+  },
+  {
+   "id": "av_FAKE_CARD_069",
+   "work_id": "work:yj:83ccd80c4a37b435339c",
+   "selected_variant_id": "av_FAKE_CARD_069",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_069",
+     "work_id": "work:yj:83ccd80c4a37b435339c",
+     "title": "心结千千（其他版）",
+     "year": 2008,
+     "has_playback": true,
+     "playback_count": 1,
+     "heat_value": 51.8,
+     "updated_at": "2026-09-27T19:08:28.137Z",
+     "selected": true
+    }
+   ],
+   "title": "心结千千（其他版）",
+   "aliases": [
+    "心结千千",
+    "indebt"
+   ],
+   "content_kind": "movie",
+   "year": 2008,
+   "area": "印度",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 51.8,
+   "playback_count": 1
+  },
+  {
+   "id": "av_FAKE_CARD_070",
+   "work_id": "work:yj:e6be14e92621653f8935",
+   "selected_variant_id": "av_FAKE_CARD_070",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_070",
+     "work_id": "work:yj:e6be14e92621653f8935",
+     "title": "耳畔千千语,唯得一人心",
+     "year": 2026,
+     "has_playback": true,
+     "playback_count": 56,
+     "heat_value": 39.03,
+     "updated_at": "2026-11-12T16:14:01.459Z",
+     "selected": true
+    }
+   ],
+   "title": "耳畔千千语,唯得一人心",
+   "aliases": [
+    "erpanqianqianyuweideyirenxin"
+   ],
+   "content_kind": "short_drama",
+   "year": 2026,
+   "area": "中国大陆",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 39.03,
+   "playback_count": 56
+  },
+  {
+   "id": "av_FAKE_CARD_071",
+   "work_id": "work:yj:b1744899e5aede3d8135",
+   "selected_variant_id": "av_FAKE_CARD_071",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_071",
+     "work_id": "work:yj:b1744899e5aede3d8135",
+     "title": "念你,千千万万遍",
+     "year": 2026,
+     "has_playback": true,
+     "playback_count": 15,
+     "heat_value": 23.91,
+     "updated_at": "2026-10-04T19:31:09.549Z",
+     "selected": true
+    }
+   ],
+   "title": "念你,千千万万遍",
+   "aliases": [
+    "nianniqianqianwanwanbian"
+   ],
+   "content_kind": "short_drama",
+   "year": 2026,
+   "area": "中国大陆",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 23.91,
+   "playback_count": 15
+  },
+  {
+   "id": "av_FAKE_CARD_072",
+   "work_id": "work:yj:d9a5190bdf1299e7fce8",
+   "selected_variant_id": "av_FAKE_CARD_072",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_072",
+     "work_id": "work:yj:d9a5190bdf1299e7fce8",
+     "title": "为你千千万万遍 短剧版",
+     "year": 2024,
+     "has_playback": true,
+     "playback_count": 204,
+     "heat_value": 23.91,
+     "updated_at": "2026-09-20T04:01:56.288Z",
+     "selected": true
+    }
+   ],
+   "title": "为你千千万万遍 短剧版",
+   "aliases": [],
+   "content_kind": "short_drama",
+   "year": 2024,
+   "area": "中国大陆",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 23.91,
+   "playback_count": 204
+  },
+  {
+   "id": "av_FAKE_CARD_073",
+   "work_id": "work:yj:1f234b59cfe6a58b6a0c",
+   "selected_variant_id": "av_FAKE_CARD_073",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_073",
+     "work_id": "work:yj:1f234b59cfe6a58b6a0c",
+     "title": "心有千千结（粤语）",
+     "year": 1976,
+     "has_playback": true,
+     "playback_count": 120,
+     "heat_value": 25.93,
+     "updated_at": "2026-10-12T17:25:39.676Z",
+     "selected": true
+    }
+   ],
+   "title": "心有千千结（粤语）",
+   "aliases": [
+    "心有千千结",
+    "xinyouqianqianjieyueyu",
+    "心有千千结粤语"
+   ],
+   "content_kind": "series",
+   "year": 1976,
+   "area": "中国香港",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 25.93,
+   "playback_count": 120
+  },
+  {
+   "id": "av_FAKE_CARD_074",
+   "work_id": "work:yj:607b9c7fe05019f67cc5",
+   "selected_variant_id": "av_FAKE_CARD_074",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_074",
+     "work_id": "work:yj:607b9c7fe05019f67cc5",
+     "title": "为你千千万万遍",
+     "year": 2021,
+     "has_playback": true,
+     "playback_count": 366,
+     "heat_value": 33.99,
+     "updated_at": "2026-11-19T02:31:47.487Z",
+     "selected": true
+    }
+   ],
+   "title": "为你千千万万遍",
+   "aliases": [
+    "weiniqianqianwanwanbian"
+   ],
+   "content_kind": "series",
+   "year": 2021,
+   "area": "中国大陆",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 33.99,
+   "playback_count": 366
+  },
+  {
+   "id": "av_FAKE_CARD_075",
+   "work_id": "work:yj:2627a78e137bbbb432de",
+   "selected_variant_id": "av_FAKE_CARD_075",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_075",
+     "work_id": "work:yj:2627a78e137bbbb432de",
+     "title": "情有千千劫",
+     "year": 2002,
+     "has_playback": true,
+     "playback_count": 316,
+     "heat_value": 40.35,
+     "updated_at": "2026-11-19T02:31:52.682Z",
+     "selected": true
+    }
+   ],
+   "title": "情有千千劫",
+   "aliases": [
+    "赶尽杀绝",
+    "赶尽杀绝psycologicalmurders",
+    "情有千千劫其他版",
+    "psycologicalmurders",
+    "qingyouqianqianjie"
+   ],
+   "content_kind": "series",
+   "year": 2002,
+   "area": "中国大陆",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 40.35,
+   "playback_count": 316
+  },
+  {
+   "id": "av_FAKE_CARD_076",
+   "work_id": "work:yj:4e8560004b5011f429ea",
+   "selected_variant_id": "av_FAKE_CARD_076",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_076",
+     "work_id": "work:yj:4e8560004b5011f429ea",
+     "title": "为你千千万万",
+     "year": 2025,
+     "has_playback": true,
+     "playback_count": 196,
+     "heat_value": 24.37,
+     "updated_at": "2026-11-11T14:42:22.373Z",
+     "selected": true
+    }
+   ],
+   "title": "为你千千万万",
+   "aliases": [
+    "weiniqianqianwanwan",
+    "weiniqianqianwanwan2025",
+    "为你千千万万2025",
+    "NBA常规赛 魔术VS开拓者 20250131"
+   ],
+   "content_kind": "short_drama",
+   "year": 2025,
+   "area": "中国大陆",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 24.37,
+   "playback_count": 196
+  },
+  {
+   "id": "av_FAKE_CARD_077",
+   "work_id": "work:yj:76b276c1bb4bce043ce2",
+   "selected_variant_id": "av_FAKE_CARD_077",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_077",
+     "work_id": "work:yj:76b276c1bb4bce043ce2",
+     "title": "为你千千万万遍短剧",
+     "year": 2024,
+     "has_playback": true,
+     "playback_count": 2,
+     "heat_value": 24.12,
+     "updated_at": "2026-09-15T10:25:28.100Z",
+     "selected": true
+    }
+   ],
+   "title": "为你千千万万遍短剧",
+   "aliases": [],
+   "content_kind": "short_drama",
+   "year": 2024,
+   "area": "中国大陆",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 24.12,
+   "playback_count": 2
+  }
+ ],
+ "pagination": {
+  "page": 1,
+  "limit": 20,
+  "offset": 0,
+  "total": 158,
+  "returned_count": 18,
+  "has_more": true,
+  "next_page": 2,
+  "next_offset": 20,
+  "next_cursor": "eyJ2IjoxLCJvIjoyMCwiZiI6IjJjMElxRUZvMnJ6c2dMXzYifQ"
+ }
+}

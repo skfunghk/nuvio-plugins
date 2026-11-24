@@ -1,0 +1,27 @@
+{
+  "name": "skfunghk 的 Nuvio 插件集 · 看剧AI 官方线路",
+  "version": "1",
+  "description": "可选仓库：在第三方线路之外，每次加载线路列表时再解析一条看剧AI 官方线路。官方线路按站点游客额度计费，每次加载消耗一次；不需要就不要添加这个仓库。",
+  "author": "skfunghk",
+  "scrapers": [
+    {
+      "id": "kanju-official",
+      "name": "看剧AI 官方线路",
+      "description": "看剧AI 官方线路 + 第三方线路。会创建站点游客会话并消耗游客播放额度（每次加载线路列表一次）。只解析站点默认选中的那一条官方线路。",
+      "version": "0.1.0",
+      "filename": "kanju.js",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "zh"
+      ],
+      "formats": [
+        "m3u8",
+        "mp4"
+      ]
+    }
+  ]
+}

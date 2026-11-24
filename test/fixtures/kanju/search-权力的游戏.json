@@ -1,0 +1,596 @@
+{
+ "object": "catalog.browse",
+ "cards": [
+  {
+   "id": "av_FAKE_CARD_001",
+   "work_id": "work:yj:f27077306a1f02ff9f0c",
+   "selected_variant_id": "av_FAKE_CARD_001",
+   "season_count": 8,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_001",
+     "work_id": "work:yj:f27077306a1f02ff9f0c",
+     "title": "权力的游戏 第1季",
+     "season_number": 1,
+     "season_label": "第1季",
+     "year": 2011,
+     "has_playback": true,
+     "playback_count": 310,
+     "heat_value": 145.26,
+     "updated_at": "2026-11-14T14:27:33.008Z",
+     "selected": true
+    },
+    {
+     "variant_id": "av_FAKE_VAR_002",
+     "work_id": "work:yj:f27077306a1f02ff9f0c",
+     "title": "权力的游戏 第2季",
+     "season_number": 2,
+     "season_label": "第2季",
+     "year": 2012,
+     "has_playback": true,
+     "playback_count": 270,
+     "heat_value": 126.16,
+     "updated_at": "2026-11-14T18:28:49.999Z",
+     "selected": false
+    },
+    {
+     "variant_id": "av_FAKE_VAR_003",
+     "work_id": "work:yj:f27077306a1f02ff9f0c",
+     "title": "权力的游戏 第3季",
+     "season_number": 3,
+     "season_label": "第3季",
+     "year": 2013,
+     "has_playback": true,
+     "playback_count": 270,
+     "heat_value": 118.57,
+     "updated_at": "2026-11-14T14:27:33.008Z",
+     "selected": false
+    },
+    {
+     "variant_id": "av_FAKE_VAR_004",
+     "work_id": "work:yj:f27077306a1f02ff9f0c",
+     "title": "权力的游戏 第4季",
+     "season_number": 4,
+     "season_label": "第4季",
+     "year": 2014,
+     "has_playback": true,
+     "playback_count": 290,
+     "heat_value": 128,
+     "updated_at": "2026-11-14T14:27:33.008Z",
+     "selected": false
+    },
+    {
+     "variant_id": "av_FAKE_VAR_005",
+     "work_id": "work:yj:f27077306a1f02ff9f0c",
+     "title": "权力的游戏 第6季",
+     "season_number": 6,
+     "season_label": "第6季",
+     "year": 2016,
+     "has_playback": true,
+     "playback_count": 280,
+     "heat_value": 101.67,
+     "updated_at": "2026-11-14T14:27:33.008Z",
+     "selected": false
+    },
+    {
+     "variant_id": "av_FAKE_VAR_006",
+     "work_id": "work:yj:f27077306a1f02ff9f0c",
+     "title": "权力的游戏 第7季",
+     "season_number": 7,
+     "season_label": "第7季",
+     "year": 2017,
+     "has_playback": true,
+     "playback_count": 229,
+     "heat_value": 84.86,
+     "updated_at": "2026-11-14T14:27:33.008Z",
+     "selected": false
+    },
+    {
+     "variant_id": "av_FAKE_VAR_007",
+     "work_id": "work:yj:f27077306a1f02ff9f0c",
+     "title": "权力的游戏 第5季",
+     "season_number": 5,
+     "season_label": "第5季",
+     "year": 2015,
+     "has_playback": true,
+     "playback_count": 286,
+     "heat_value": 122.58,
+     "updated_at": "2026-11-14T14:27:33.008Z",
+     "selected": false
+    },
+    {
+     "variant_id": "av_FAKE_VAR_008",
+     "work_id": "work:yj:f27077306a1f02ff9f0c",
+     "title": "权力的游戏 第8季",
+     "season_number": 8,
+     "season_label": "第8季",
+     "year": 2019,
+     "has_playback": true,
+     "playback_count": 162,
+     "heat_value": 117.91,
+     "updated_at": "2026-11-14T14:27:33.008Z",
+     "selected": false
+    }
+   ],
+   "title": "权力的游戏 第1季",
+   "aliases": [
+    "权力的游戏",
+    "冰与火之歌权力的游戏1",
+    "冰与火之歌权力的游戏一",
+    "权力的游戏1季gameofthrones1",
+    "权力的游戏一gameofthronesseason1",
+    "权利的游戏冰与火之歌权力的游戏1季王座游戏1季asongoficeandfiregameofthrones1",
+    "权利的游戏冰与火之歌权力的游戏一王座游戏一asongoficeandfiregameofthronesseason1",
+    "史诗巨作",
+    "王座游戏1",
+    "王座游戏一",
+    "asongoficeandfiregameofthrones1",
+    "asongoficeandfiregameofthronesseason1",
+    "gameofthrones1",
+    "gameofthronesseason1",
+    "quanlideyouxi",
+    "quanlideyouxi1"
+   ],
+   "content_kind": "series",
+   "year": 2011,
+   "area": "美国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 145.26,
+   "playback_count": 310
+  },
+  {
+   "id": "av_FAKE_CARD_009",
+   "work_id": "work:yj:b5d160635b72445a68d5",
+   "selected_variant_id": "av_FAKE_CARD_009",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_009",
+     "work_id": "work:yj:b5d160635b72445a68d5",
+     "title": "权力的游戏 第8季",
+     "season_number": 8,
+     "season_label": "第8季",
+     "year": 2019,
+     "has_playback": true,
+     "playback_count": 18,
+     "heat_value": 67.2,
+     "updated_at": "2026-11-13T10:27:47.360Z",
+     "selected": true
+    }
+   ],
+   "title": "权力的游戏 第8季",
+   "aliases": [
+    "权力的游戏",
+    "quanlideyouxidibaji",
+    "权力的游戏第八季"
+   ],
+   "content_kind": "variety",
+   "year": 2019,
+   "area": "美国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 67.2,
+   "playback_count": 18
+  },
+  {
+   "id": "av_FAKE_CARD_010",
+   "work_id": "work:yj:96b82fc9984bbf09a54b",
+   "selected_variant_id": "av_FAKE_CARD_010",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_010",
+     "work_id": "work:yj:96b82fc9984bbf09a54b",
+     "title": "权力的游戏 Game of Thrones 第5季",
+     "season_number": 5,
+     "season_label": "第5季",
+     "year": 2015,
+     "has_playback": true,
+     "playback_count": 10,
+     "heat_value": 51.31,
+     "updated_at": "2026-08-03T03:00:50.948Z",
+     "selected": true
+    }
+   ],
+   "title": "权力的游戏 Game of Thrones 第5季",
+   "aliases": [
+    "权力的游戏 Game of Thrones",
+    "quanlideyouxidiwujigameofthrones5",
+    "权力的游戏 第五季 Game of Thrones Season 5"
+   ],
+   "content_kind": "series",
+   "year": 2015,
+   "area": "美国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 51.31,
+   "playback_count": 10
+  },
+  {
+   "id": "av_FAKE_CARD_011",
+   "work_id": "work:yj:523faf3a576f96af8c5f",
+   "selected_variant_id": "av_FAKE_CARD_011",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_011",
+     "work_id": "work:yj:523faf3a576f96af8c5f",
+     "title": "权力的游戏 Game of Thrones 第3季",
+     "season_number": 3,
+     "season_label": "第3季",
+     "year": 2013,
+     "has_playback": true,
+     "playback_count": 10,
+     "heat_value": 49.27,
+     "updated_at": "2026-08-02T14:35:48.628Z",
+     "selected": true
+    }
+   ],
+   "title": "权力的游戏 Game of Thrones 第3季",
+   "aliases": [
+    "权力的游戏 Game of Thrones",
+    "quanlideyouxidisanjigameofthrones3",
+    "权力的游戏 第三季 Game of Thrones Season 3"
+   ],
+   "content_kind": "series",
+   "year": 2013,
+   "area": "美国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 49.27,
+   "playback_count": 10
+  },
+  {
+   "id": "av_FAKE_CARD_012",
+   "work_id": "work:yj:e40be5ff40107f439e18",
+   "selected_variant_id": "av_FAKE_CARD_012",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_012",
+     "work_id": "work:yj:e40be5ff40107f439e18",
+     "title": "权力的游戏 Game of Thrones 第8季",
+     "season_number": 8,
+     "season_label": "第8季",
+     "year": 2019,
+     "has_playback": true,
+     "playback_count": 6,
+     "heat_value": 49.21,
+     "updated_at": "2026-08-02T07:25:25.783Z",
+     "selected": true
+    }
+   ],
+   "title": "权力的游戏 Game of Thrones 第8季",
+   "aliases": [
+    "权力的游戏 Game of Thrones",
+    "quanlideyouxidibajigameofthrones8",
+    "权力的游戏 第八季 Game of Thrones Season 8"
+   ],
+   "content_kind": "series",
+   "year": 2019,
+   "area": "美国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 49.21,
+   "playback_count": 6
+  },
+  {
+   "id": "av_FAKE_CARD_013",
+   "work_id": "work:yj:b85321a904e7a9b8c66b",
+   "selected_variant_id": "av_FAKE_CARD_013",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_013",
+     "work_id": "work:yj:b85321a904e7a9b8c66b",
+     "title": "权力的游戏前传:龙族",
+     "year": 2022,
+     "has_playback": true,
+     "playback_count": 60,
+     "heat_value": 53.38,
+     "updated_at": "2026-10-10T02:17:52.476Z",
+     "selected": true
+    }
+   ],
+   "title": "权力的游戏前传:龙族",
+   "aliases": [
+    "龙之家族",
+    "龙之家族1",
+    "quanlideyouxiqianchuanlongzu",
+    "权力的游戏前传：龙族"
+   ],
+   "content_kind": "series",
+   "year": 2022,
+   "area": "美国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 53.38,
+   "playback_count": 60
+  },
+  {
+   "id": "av_FAKE_CARD_014",
+   "work_id": "work:yj:b9ec91f885fe6e54933f",
+   "selected_variant_id": "av_FAKE_CARD_014",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_014",
+     "work_id": "work:yj:b9ec91f885fe6e54933f",
+     "title": "权力的游戏 Game of Thrones 第4季",
+     "season_number": 4,
+     "season_label": "第4季",
+     "year": 2014,
+     "has_playback": true,
+     "playback_count": 10,
+     "heat_value": 53.7,
+     "updated_at": "2026-08-03T05:54:54.467Z",
+     "selected": true
+    }
+   ],
+   "title": "权力的游戏 Game of Thrones 第4季",
+   "aliases": [
+    "权力的游戏 Game of Thrones",
+    "quanlideyouxidisijigameofthrones4",
+    "权力的游戏 第四季 Game of Thrones Season 4"
+   ],
+   "content_kind": "series",
+   "year": 2014,
+   "area": "美国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 53.7,
+   "playback_count": 10
+  },
+  {
+   "id": "av_FAKE_CARD_015",
+   "work_id": "work:yj:0634a258e9b17e9181e4",
+   "selected_variant_id": "av_FAKE_CARD_015",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_015",
+     "work_id": "work:yj:0634a258e9b17e9181e4",
+     "title": "权力的游戏:征服与反抗",
+     "year": 2017,
+     "has_playback": true,
+     "playback_count": 6,
+     "heat_value": 46.41,
+     "updated_at": "2026-10-10T17:18:20.634Z",
+     "selected": true
+    }
+   ],
+   "title": "权力的游戏:征服与反抗",
+   "aliases": [
+    "权力的游戏征服与反抗",
+    "权力的游戏征服与叛乱",
+    "quanlideyouxizhengfuyufankang",
+    "权力的游戏：征服与反抗"
+   ],
+   "content_kind": "movie",
+   "year": 2017,
+   "area": "美国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 46.41,
+   "playback_count": 6
+  },
+  {
+   "id": "av_FAKE_CARD_016",
+   "work_id": "work:yj:f6ff45530fa70f0bb4fa",
+   "selected_variant_id": "av_FAKE_CARD_016",
+   "season_count": 2,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_016",
+     "work_id": "work:yj:f6ff45530fa70f0bb4fa",
+     "title": "权力的游戏前传:龙族",
+     "year": 2022,
+     "has_playback": true,
+     "playback_count": 8,
+     "heat_value": 44.98,
+     "updated_at": "2026-08-02T11:02:53.346Z",
+     "selected": true
+    },
+    {
+     "variant_id": "av_FAKE_VAR_017",
+     "work_id": "work:yj:f6ff45530fa70f0bb4fa",
+     "title": "权力的游戏前传龙族 第1季",
+     "season_number": 1,
+     "season_label": "第1季",
+     "year": 2022,
+     "has_playback": true,
+     "playback_count": 20,
+     "heat_value": 48.36,
+     "updated_at": "2026-11-13T11:36:00.611Z",
+     "selected": false
+    }
+   ],
+   "title": "权力的游戏前传:龙族",
+   "aliases": [
+    "权力的游戏前传龙族",
+    "quanlideyouxiqianchuanlongzudierji",
+    "权力的游戏前传：龙族 第二季"
+   ],
+   "content_kind": "series",
+   "year": 2022,
+   "area": "美国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 44.98,
+   "playback_count": 8
+  },
+  {
+   "id": "av_FAKE_CARD_018",
+   "work_id": "work:yj:c10c571db52c2d73176f",
+   "selected_variant_id": "av_FAKE_CARD_018",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_018",
+     "work_id": "work:yj:c10c571db52c2d73176f",
+     "title": "权力的游戏 Game of Thrones 第1季",
+     "season_number": 1,
+     "season_label": "第1季",
+     "year": 2011,
+     "has_playback": true,
+     "playback_count": 10,
+     "heat_value": 74.3,
+     "updated_at": "2026-08-03T10:41:51.207Z",
+     "selected": true
+    }
+   ],
+   "title": "权力的游戏 Game of Thrones 第1季",
+   "aliases": [
+    "权力的游戏 Game of Thrones",
+    "quanlideyouxidiyijigameofthrones1",
+    "权力的游戏 第一季 Game of Thrones Season 1"
+   ],
+   "content_kind": "series",
+   "year": 2011,
+   "area": "美国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 74.3,
+   "playback_count": 10
+  },
+  {
+   "id": "av_FAKE_CARD_019",
+   "work_id": "work:yj:af51a12b3748161a3293",
+   "selected_variant_id": "av_FAKE_CARD_019",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_019",
+     "work_id": "work:yj:af51a12b3748161a3293",
+     "title": "权力的游戏:最后的守夜人",
+     "year": 2019,
+     "has_playback": true,
+     "playback_count": 15,
+     "heat_value": 43.64,
+     "updated_at": "2026-11-06T23:38:32.262Z",
+     "selected": true
+    }
+   ],
+   "title": "权力的游戏:最后的守夜人",
+   "aliases": [
+    "见证最终季的诞生",
+    "权力的游戏最后的守夜",
+    "quanlideyouxizuihoudeshouyeren",
+    "权力的游戏：最后的守夜人"
+   ],
+   "content_kind": "documentary",
+   "year": 2019,
+   "area": "美国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 43.64,
+   "playback_count": 15
+  },
+  {
+   "id": "av_FAKE_CARD_020",
+   "work_id": "work:yj:e581a3a4778565a1ee6e",
+   "selected_variant_id": "av_FAKE_CARD_020",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_020",
+     "work_id": "work:yj:e581a3a4778565a1ee6e",
+     "title": "权力的游戏 Game of Thrones 第6季",
+     "season_number": 6,
+     "season_label": "第6季",
+     "year": 2016,
+     "has_playback": true,
+     "playback_count": 10,
+     "heat_value": 52.32,
+     "updated_at": "2026-08-02T11:34:47.735Z",
+     "selected": true
+    }
+   ],
+   "title": "权力的游戏 Game of Thrones 第6季",
+   "aliases": [
+    "权力的游戏 Game of Thrones",
+    "quanlideyouxidiliujigameofthrones6",
+    "权力的游戏 第六季 Game of Thrones Season 6"
+   ],
+   "content_kind": "series",
+   "year": 2016,
+   "area": "美国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 52.32,
+   "playback_count": 10
+  }
+ ],
+ "pagination": {
+  "page": 1,
+  "limit": 20,
+  "offset": 0,
+  "total": 200,
+  "returned_count": 12,
+  "has_more": true,
+  "next_page": 2,
+  "next_offset": 20,
+  "next_cursor": "eyJ2IjoxLCJvIjoyMCwiZiI6ImlOTlZET1M3ajMyMllWbzgifQ"
+ }
+}

@@ -1,0 +1,596 @@
+{
+ "object": "catalog.browse",
+ "cards": [
+  {
+   "id": "av_FAKE_CARD_039",
+   "work_id": "work:yj:2d174ea36a5030e175ef",
+   "selected_variant_id": "av_FAKE_CARD_039",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_039",
+     "work_id": "work:yj:2d174ea36a5030e175ef",
+     "title": "流浪地球",
+     "year": 2019,
+     "has_playback": true,
+     "playback_count": 43,
+     "heat_value": 96.3,
+     "updated_at": "2026-11-08T02:39:27.344Z",
+     "selected": true
+    }
+   ],
+   "title": "流浪地球",
+   "aliases": [
+    "流浪地球飞跃2020特别版",
+    "liulangdiqiu",
+    "liulangdiqiufeiyue2020tebieban",
+    "thewanderingearth",
+    "thewanderingearthbeyond2020specialedition",
+    "流浪地球：飞跃2020特别版",
+    "流浪地球2"
+   ],
+   "content_kind": "movie",
+   "year": 2019,
+   "area": "中国大陆",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 96.3,
+   "playback_count": 43
+  },
+  {
+   "id": "av_FAKE_CARD_040",
+   "work_id": "work:yj:21a80362d4fa1904fcb6",
+   "selected_variant_id": "av_FAKE_CARD_040",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_040",
+     "work_id": "work:yj:21a80362d4fa1904fcb6",
+     "title": "流浪地球(特别版)",
+     "year": 2019,
+     "has_playback": true,
+     "playback_count": 7,
+     "heat_value": 51.98,
+     "updated_at": "2026-10-25T03:19:19.056Z",
+     "selected": true
+    }
+   ],
+   "title": "流浪地球(特别版)",
+   "aliases": [
+    "流浪地球",
+    "流浪地球特别版",
+    "liulangdiqiutebieban"
+   ],
+   "content_kind": "movie",
+   "year": 2019,
+   "area": "中国大陆",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 51.98,
+   "playback_count": 7
+  },
+  {
+   "id": "av_FAKE_CARD_041",
+   "work_id": "work:yj:8f5cea1a6a64d7816740",
+   "selected_variant_id": "av_FAKE_CARD_041",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_041",
+     "work_id": "work:yj:8f5cea1a6a64d7816740",
+     "title": "流浪地球2",
+     "year": 2023,
+     "has_playback": true,
+     "playback_count": 33,
+     "heat_value": 136.5,
+     "updated_at": "2026-11-20T19:24:55.831Z",
+     "selected": true
+    }
+   ],
+   "title": "流浪地球2",
+   "aliases": [
+    "流浪地球23d版",
+    "流浪地球前传",
+    "liulangdiqiu2",
+    "t流浪地球23d版",
+    "thewanderingearth2",
+    "thewanderingearthii",
+    "流浪地球"
+   ],
+   "content_kind": "movie",
+   "year": 2023,
+   "area": "中国大陆",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 136.5,
+   "playback_count": 33
+  },
+  {
+   "id": "av_FAKE_CARD_042",
+   "work_id": "work:yj:e54b341872d7e22fcbd6",
+   "selected_variant_id": "av_FAKE_CARD_042",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_042",
+     "work_id": "work:yj:e54b341872d7e22fcbd6",
+     "title": "流浪地球之大夏战狼",
+     "year": 2024,
+     "has_playback": true,
+     "playback_count": 295,
+     "heat_value": 55.16,
+     "updated_at": "2026-11-18T00:53:46.104Z",
+     "selected": true
+    }
+   ],
+   "title": "流浪地球之大夏战狼",
+   "aliases": [
+    "liulangdiqiuzhidaxiazhanlang"
+   ],
+   "content_kind": "short_drama",
+   "year": 2024,
+   "area": "中国大陆",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 55.16,
+   "playback_count": 295
+  },
+  {
+   "id": "av_FAKE_CARD_043",
+   "work_id": "work:yj:31ce16b90ff8dfa6a603",
+   "selected_variant_id": "av_FAKE_CARD_043",
+   "season_count": 2,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_043",
+     "work_id": "work:yj:31ce16b90ff8dfa6a603",
+     "title": "流浪地球2:再次冒险",
+     "year": 2024,
+     "has_playback": true,
+     "playback_count": 18,
+     "heat_value": 52.06,
+     "updated_at": "2026-10-01T04:09:41.888Z",
+     "selected": true
+    },
+    {
+     "variant_id": "av_FAKE_VAR_044",
+     "work_id": "work:yj:31ce16b90ff8dfa6a603",
+     "title": "流浪地球2:再次冒险",
+     "year": 2024,
+     "has_playback": true,
+     "playback_count": 3,
+     "heat_value": 33.4,
+     "updated_at": "2026-08-26T18:52:18.379Z",
+     "selected": false
+    }
+   ],
+   "title": "流浪地球2:再次冒险",
+   "aliases": [
+    "流浪地球2纪录片",
+    "推向星辰流浪地球2背后的另一场冒险",
+    "insidethewanderingearthii",
+    "liulangdiqiu2zaicimaoxian",
+    "流浪地球2：再次冒险"
+   ],
+   "content_kind": "documentary",
+   "year": 2024,
+   "area": "中国大陆",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 52.06,
+   "playback_count": 18
+  },
+  {
+   "id": "av_FAKE_CARD_045",
+   "work_id": "work:yj:a29b98443b854e39d31a",
+   "selected_variant_id": "av_FAKE_CARD_045",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_045",
+     "work_id": "work:yj:a29b98443b854e39d31a",
+     "title": "流浪地球之大夏战狼",
+     "year": 2024,
+     "has_playback": true,
+     "playback_count": 52,
+     "heat_value": 40.29,
+     "updated_at": "2026-07-11T20:39:55.091Z",
+     "selected": true
+    }
+   ],
+   "title": "流浪地球之大夏战狼",
+   "aliases": [
+    "liulangdiqiuzhidaxiazhanlang"
+   ],
+   "content_kind": "short_drama",
+   "year": 2024,
+   "area": "中国大陆",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 40.29,
+   "playback_count": 52
+  },
+  {
+   "id": "av_FAKE_CARD_046",
+   "work_id": "work:yj:a9d4288663f37a8fd987",
+   "selected_variant_id": "av_FAKE_CARD_046",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_046",
+     "work_id": "work:yj:a9d4288663f37a8fd987",
+     "title": "银翼战刃·动态漫",
+     "year": 2019,
+     "has_playback": true,
+     "playback_count": 90,
+     "heat_value": 43.97,
+     "updated_at": "2026-10-30T21:33:57.170Z",
+     "selected": true
+    }
+   ],
+   "title": "银翼战刃·动态漫",
+   "aliases": [
+    "yinyizhanrendongtaiman",
+    "流浪地球3(上",
+    "银翼战刃动态漫"
+   ],
+   "content_kind": "anime",
+   "year": 2019,
+   "area": "中国大陆",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 43.97,
+   "playback_count": 90
+  },
+  {
+   "id": "av_FAKE_CARD_047",
+   "work_id": "work:yj:9bb3defcbf7f215133d2",
+   "selected_variant_id": "av_FAKE_CARD_047",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_047",
+     "work_id": "work:yj:9bb3defcbf7f215133d2",
+     "title": "我死后渣男老公后悔了",
+     "year": 2024,
+     "has_playback": true,
+     "playback_count": 105,
+     "heat_value": 41.31,
+     "updated_at": "2026-11-24T00:37:42.300Z",
+     "selected": true
+    }
+   ],
+   "title": "我死后渣男老公后悔了",
+   "aliases": [
+    "wosihouzhananlaogonghouhuiliao",
+    "流浪地球2:再次冒险"
+   ],
+   "content_kind": "short_drama",
+   "year": 2024,
+   "area": "中国大陆",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 41.31,
+   "playback_count": 105
+  },
+  {
+   "id": "av_FAKE_CARD_048",
+   "work_id": "work:yj:7e74555663a8fe1f2bb5",
+   "selected_variant_id": "av_FAKE_CARD_048",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_048",
+     "work_id": "work:yj:7e74555663a8fe1f2bb5",
+     "title": "江苏卫视2024跨年演唱会",
+     "year": 2023,
+     "has_playback": true,
+     "playback_count": 10,
+     "heat_value": 33.02,
+     "updated_at": "2026-10-13T11:27:30.441Z",
+     "selected": true
+    }
+   ],
+   "title": "江苏卫视2024跨年演唱会",
+   "aliases": [
+    "2024江苏卫视跨年演唱会",
+    "更好2024江苏卫视跨年演唱会",
+    "江苏卫视2024跨年演唱会2023",
+    "jiangsuweishi2024kuanianyanchanghui"
+   ],
+   "content_kind": "variety",
+   "year": 2023,
+   "area": "中国大陆",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 33.02,
+   "playback_count": 10
+  },
+  {
+   "id": "av_FAKE_CARD_049",
+   "work_id": "work:yj:cf1c486910020d4d9b1d",
+   "selected_variant_id": "av_FAKE_CARD_049",
+   "season_count": 2,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_049",
+     "work_id": "work:yj:cf1c486910020d4d9b1d",
+     "title": "2024江苏卫视跨年演唱会",
+     "year": 2023,
+     "has_playback": true,
+     "playback_count": 13,
+     "heat_value": 26.24,
+     "updated_at": "2026-10-01T19:16:08.392Z",
+     "selected": true
+    },
+    {
+     "variant_id": "av_FAKE_VAR_050",
+     "work_id": "work:yj:cf1c486910020d4d9b1d",
+     "title": "2024江苏卫视跨年演唱会",
+     "year": 2023,
+     "has_playback": true,
+     "playback_count": 2,
+     "heat_value": 26.3,
+     "updated_at": "2026-10-05T00:17:33.730Z",
+     "selected": false
+    }
+   ],
+   "title": "2024江苏卫视跨年演唱会",
+   "aliases": [],
+   "content_kind": "variety",
+   "year": 2023,
+   "area": "中国大陆",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 26.24,
+   "playback_count": 13
+  },
+  {
+   "id": "av_FAKE_CARD_051",
+   "work_id": "work:yj:ae969e245386f2bd8926",
+   "selected_variant_id": "av_FAKE_CARD_051",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_051",
+     "work_id": "work:yj:ae969e245386f2bd8926",
+     "title": "星际密探",
+     "year": 2018,
+     "has_playback": true,
+     "playback_count": 19,
+     "heat_value": 31.73,
+     "updated_at": "2026-11-05T16:49:58.429Z",
+     "selected": true
+    }
+   ],
+   "title": "星际密探",
+   "aliases": [
+    "xingjimitan"
+   ],
+   "content_kind": "movie",
+   "year": 2018,
+   "area": "中国大陆",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 31.73,
+   "playback_count": 19
+  },
+  {
+   "id": "av_FAKE_CARD_052",
+   "work_id": "work:yj:54657c734f4a195e84b7",
+   "selected_variant_id": "av_FAKE_CARD_052",
+   "season_count": 6,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_052",
+     "work_id": "work:yj:54657c734f4a195e84b7",
+     "title": "星际旅行:重返地球 第7季",
+     "season_number": 7,
+     "season_label": "第7季",
+     "year": 2000,
+     "has_playback": true,
+     "playback_count": 70,
+     "heat_value": 36.12,
+     "updated_at": "2026-10-29T11:31:41.204Z",
+     "selected": true
+    },
+    {
+     "variant_id": "av_FAKE_VAR_053",
+     "work_id": "work:yj:54657c734f4a195e84b7",
+     "title": "星际旅行:重返地球 第5季",
+     "season_number": 5,
+     "season_label": "第5季",
+     "year": 1998,
+     "has_playback": true,
+     "playback_count": 74,
+     "heat_value": 31.51,
+     "updated_at": "2026-10-29T11:31:48.408Z",
+     "selected": false
+    },
+    {
+     "variant_id": "av_FAKE_VAR_054",
+     "work_id": "work:yj:54657c734f4a195e84b7",
+     "title": "星际旅行:重返地球 第2季",
+     "season_number": 2,
+     "season_label": "第2季",
+     "year": 1995,
+     "has_playback": true,
+     "playback_count": 78,
+     "heat_value": 30.17,
+     "updated_at": "2026-10-29T11:31:47.443Z",
+     "selected": false
+    },
+    {
+     "variant_id": "av_FAKE_VAR_055",
+     "work_id": "work:yj:54657c734f4a195e84b7",
+     "title": "星际旅行:重返地球 第6季",
+     "season_number": 6,
+     "season_label": "第6季",
+     "year": 1999,
+     "has_playback": true,
+     "playback_count": 78,
+     "heat_value": 29.05,
+     "updated_at": "2026-10-29T11:31:47.443Z",
+     "selected": false
+    },
+    {
+     "variant_id": "av_FAKE_VAR_056",
+     "work_id": "work:yj:54657c734f4a195e84b7",
+     "title": "星际旅行:重返地球 第4季",
+     "season_number": 4,
+     "season_label": "第4季",
+     "year": 1997,
+     "has_playback": true,
+     "playback_count": 78,
+     "heat_value": 28.71,
+     "updated_at": "2026-10-29T11:31:48.408Z",
+     "selected": false
+    },
+    {
+     "variant_id": "av_FAKE_VAR_057",
+     "work_id": "work:yj:54657c734f4a195e84b7",
+     "title": "星际旅行:重返地球 第1季",
+     "season_number": 1,
+     "season_label": "第1季",
+     "year": 1995,
+     "has_playback": true,
+     "playback_count": 45,
+     "heat_value": 30.92,
+     "updated_at": "2026-10-29T11:31:47.443Z",
+     "selected": false
+    }
+   ],
+   "title": "星际旅行:重返地球 第7季",
+   "aliases": [
+    "星际旅行:重返地球",
+    "星际迷航航海家号7",
+    "星际迷航航海家号七",
+    "星际争霸战台航海家号7",
+    "星际争霸战台航海家号七",
+    "星舰迷航重返地球7",
+    "星舰迷航重返地球七",
+    "星舰奇航记重返地球7",
+    "星舰奇航记重返地球七",
+    "星空奇遇记港重返地球7",
+    "星空奇遇记港重返地球七",
+    "xingjilvxingzhongfandiqiudiqiji",
+    "星际旅行:重返地球第七季",
+    "星际旅行：重返地球第七季"
+   ],
+   "content_kind": "series",
+   "year": 2000,
+   "area": "美国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 36.12,
+   "playback_count": 70
+  },
+  {
+   "id": "av_FAKE_CARD_058",
+   "work_id": "work:yj:50bb36c006445a829abb",
+   "selected_variant_id": "av_FAKE_CARD_058",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_058",
+     "work_id": "work:yj:50bb36c006445a829abb",
+     "title": "龙珠Z:地球争霸战",
+     "year": 1990,
+     "has_playback": true,
+     "playback_count": 2,
+     "heat_value": 35.85,
+     "updated_at": "2026-09-25T21:05:55.824Z",
+     "selected": true
+    }
+   ],
+   "title": "龙珠Z:地球争霸战",
+   "aliases": [
+    "龙珠z剧场版3地球超级大决战ドラゴンボールz剧场版地球まるごと超决戦",
+    "longzhuzdiqiuzhengbazhan"
+   ],
+   "content_kind": "movie",
+   "year": 1990,
+   "area": "日本",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 35.85,
+   "playback_count": 2
+  }
+ ],
+ "pagination": {
+  "page": 1,
+  "limit": 20,
+  "offset": 0,
+  "total": 200,
+  "returned_count": 13,
+  "has_more": true,
+  "next_page": 2,
+  "next_offset": 20,
+  "next_cursor": "eyJ2IjoxLCJvIjoyMCwiZiI6IndZY19CZmdXdmxxWTF2WWoifQ"
+ }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "skfunghk 的 Nuvio 插件集",
+  "version": "1",
+  "description": "看剧AI（kanju44.com / kanju.ai）播放线路。只提供线路，不含片库或搜索；仅限可侧载（sideloaded）版 Nuvio。",
+  "author": "skfunghk",
+  "scrapers": [
+    {
+      "id": "kanju",
+      "name": "看剧AI",
+      "description": "看剧AI 第三方线路：按 TMDB 片名匹配剧集，返回站点不消耗游客额度的 m3u8/mp4 直链。kanju44.com 不通时自动改用 kanju.ai。",
+      "version": "0.1.0",
+      "filename": "kanju/kanju.js",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "zh"
+      ],
+      "formats": [
+        "m3u8",
+        "mp4"
+      ]
+    }
+  ]
+}

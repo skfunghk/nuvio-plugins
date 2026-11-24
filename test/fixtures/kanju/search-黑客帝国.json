@@ -1,0 +1,753 @@
+{
+ "object": "catalog.browse",
+ "cards": [
+  {
+   "id": "av_FAKE_CARD_021",
+   "work_id": "work:yj:ac5b782b00f52f35ccb6",
+   "selected_variant_id": "av_FAKE_CARD_021",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_021",
+     "work_id": "work:yj:ac5b782b00f52f35ccb6",
+     "title": "黑客帝国",
+     "year": 1999,
+     "has_playback": true,
+     "playback_count": 37,
+     "heat_value": 76.81,
+     "updated_at": "2026-10-28T11:31:51.484Z",
+     "selected": true
+    }
+   ],
+   "title": "黑客帝国",
+   "aliases": [
+    "22世纪杀人网络港",
+    "22世纪杀人网络港廿二世纪杀人网络港骇客任务台骇客帝国",
+    "2世纪杀人网络港",
+    "骇客帝国",
+    "骇客帝国imdbtt0133093",
+    "骇客任务台",
+    "黑客帝国国语",
+    "廿二世纪杀人网络港",
+    "heikediguo",
+    "heikediguo4juzhenzhongqi",
+    "heikediguo4k",
+    "heikediguoguoyu",
+    "heikediguoguoyu4k",
+    "heikediguothematrix",
+    "thematrix",
+    "黑客帝国 The Matrix"
+   ],
+   "content_kind": "movie",
+   "year": 1999,
+   "area": "美国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 76.81,
+   "playback_count": 37
+  },
+  {
+   "id": "av_FAKE_CARD_022",
+   "work_id": "work:yj:5c7a9ececddb6af46d10",
+   "selected_variant_id": "av_FAKE_CARD_022",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_022",
+     "work_id": "work:yj:5c7a9ececddb6af46d10",
+     "title": "黑客帝国",
+     "year": 2000,
+     "has_playback": true,
+     "playback_count": 2,
+     "heat_value": 55.39,
+     "updated_at": "2026-08-11T02:11:29.582Z",
+     "selected": true
+    }
+   ],
+   "title": "黑客帝国",
+   "aliases": [],
+   "content_kind": "movie",
+   "year": 2000,
+   "area": "美国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 55.39,
+   "playback_count": 2
+  },
+  {
+   "id": "av_FAKE_CARD_023",
+   "work_id": "work:yj:41c03cfe954799cd00c5",
+   "selected_variant_id": "av_FAKE_CARD_023",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_023",
+     "work_id": "work:yj:41c03cfe954799cd00c5",
+     "title": "黑客帝国3:矩阵革命",
+     "year": 2003,
+     "has_playback": true,
+     "playback_count": 40,
+     "heat_value": 65.07,
+     "updated_at": "2026-10-28T11:31:47.407Z",
+     "selected": true
+    }
+   ],
+   "title": "黑客帝国3:矩阵革命",
+   "aliases": [
+    "22世纪杀人网络3惊变世纪港",
+    "22世纪杀人网络3惊变世纪港骇客任务完结篇最后战役台廿二世纪杀人网络3惊变世纪黑客帝国3骇客帝国3",
+    "骇客帝国3",
+    "骇客任务完结篇最后战役",
+    "骇客任务完结篇最后战役台",
+    "黑客帝国3",
+    "黑客帝国3矩阵革命",
+    "黑客帝国3矩阵革命国语",
+    "黑客帝国3矩阵革命thematrixrevolutions",
+    "廿二世纪杀人网络3惊变世纪",
+    "heikediguo3juzhengeming",
+    "heikediguo3juzhengeming4k",
+    "heikediguo3juzhengemingguoyu",
+    "heikediguo3juzhengemingguoyu4k",
+    "thematrixrevolutions",
+    "黑客帝国"
+   ],
+   "content_kind": "movie",
+   "year": 2003,
+   "area": "美国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 65.07,
+   "playback_count": 40
+  },
+  {
+   "id": "av_FAKE_CARD_024",
+   "work_id": "work:yj:5c71563cc3639371fd43",
+   "selected_variant_id": "av_FAKE_CARD_024",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_024",
+     "work_id": "work:yj:5c71563cc3639371fd43",
+     "title": "黑客帝国1",
+     "year": 1999,
+     "has_playback": true,
+     "playback_count": 2,
+     "heat_value": 57.56,
+     "updated_at": "2026-09-20T09:52:18.950Z",
+     "selected": true
+    }
+   ],
+   "title": "黑客帝国1",
+   "aliases": [
+    "黑客帝国thematrix",
+    "heikediguo1"
+   ],
+   "content_kind": "movie",
+   "year": 1999,
+   "area": "美国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 57.56,
+   "playback_count": 2
+  },
+  {
+   "id": "av_FAKE_CARD_025",
+   "work_id": "work:yj:f3c8e53c33750c666747",
+   "selected_variant_id": "av_FAKE_CARD_025",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_025",
+     "work_id": "work:yj:f3c8e53c33750c666747",
+     "title": "黑客帝国2:重装上阵",
+     "year": 2003,
+     "has_playback": true,
+     "playback_count": 40,
+     "heat_value": 60.06,
+     "updated_at": "2026-10-28T11:31:47.407Z",
+     "selected": true
+    }
+   ],
+   "title": "黑客帝国2:重装上阵",
+   "aliases": [
+    "22世纪杀人网络2决战未来港骇客任务重装上阵台廿二世纪杀人网络2决战未来黑客帝国2骇客帝国2",
+    "骇客任务重装上阵",
+    "黑客帝国2重装上阵",
+    "黑客帝国2重装上阵国语",
+    "黑客帝国2重装上阵thematrixreloaded",
+    "heikediguo2zhongzhuangshangzhen",
+    "heikediguo2zhongzhuangshangzhen4k",
+    "heikediguo2zhongzhuangshangzhenguoyu",
+    "heikediguo2zhongzhuangshangzhenguoyu4k",
+    "heikediguo2zhongzhuangshangzhenputonghuaban",
+    "thematrixreloaded",
+    "黑客帝国2：重装上阵",
+    "黑客帝国2：重装上阵（普通话版）",
+    "黑客帝国2：重装上阵4K",
+    "黑客帝国2:重装上阵国语",
+    "黑客帝国2：重装上阵国语4K"
+   ],
+   "content_kind": "movie",
+   "year": 2003,
+   "area": "美国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 60.06,
+   "playback_count": 40
+  },
+  {
+   "id": "av_FAKE_CARD_026",
+   "work_id": "work:yj:4f4e81d838900d9f9bb2",
+   "selected_variant_id": "av_FAKE_CARD_026",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_026",
+     "work_id": "work:yj:4f4e81d838900d9f9bb2",
+     "title": "黑客帝国动画版",
+     "year": 2003,
+     "has_playback": true,
+     "playback_count": 4,
+     "heat_value": 41.09,
+     "updated_at": "2026-07-10T05:51:59.336Z",
+     "selected": true
+    }
+   ],
+   "title": "黑客帝国动画版",
+   "aliases": [
+    "骇客帝国动画版",
+    "heikediguodonghuaban"
+   ],
+   "content_kind": "anime",
+   "year": 2003,
+   "area": "美国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 41.09,
+   "playback_count": 4
+  },
+  {
+   "id": "av_FAKE_CARD_027",
+   "work_id": "work:yj:4ec3e70682fdb877b210",
+   "selected_variant_id": "av_FAKE_CARD_027",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_027",
+     "work_id": "work:yj:4ec3e70682fdb877b210",
+     "title": "黑客帝国动画版",
+     "year": 2003,
+     "has_playback": true,
+     "playback_count": 9,
+     "heat_value": 35.35,
+     "updated_at": "2026-11-05T18:38:03.497Z",
+     "selected": true
+    }
+   ],
+   "title": "黑客帝国动画版",
+   "aliases": [
+    "骇客帝国动画版",
+    "heikediguodonghuaban"
+   ],
+   "content_kind": "movie",
+   "year": 2003,
+   "area": "美国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 35.35,
+   "playback_count": 9
+  },
+  {
+   "id": "av_FAKE_CARD_028",
+   "work_id": "work:yj:827a8a1dd32cc8559dbb",
+   "selected_variant_id": "av_FAKE_CARD_028",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_028",
+     "work_id": "work:yj:827a8a1dd32cc8559dbb",
+     "title": "黑客帝国:矩阵重启",
+     "year": 2021,
+     "has_playback": true,
+     "playback_count": 31,
+     "heat_value": 59.53,
+     "updated_at": "2026-11-14T16:27:24.989Z",
+     "selected": true
+    }
+   ],
+   "title": "黑客帝国:矩阵重启",
+   "aliases": [
+    "22世纪杀人网络复活次元港",
+    "22世纪杀人网络复活次元港骇客任务复活台黑客帝国4矩阵重生骇客帝国4骇客任务4黑客帝国复兴",
+    "骇客帝国4",
+    "骇客任务4",
+    "骇客任务复活台",
+    "黑客帝国4矩阵重生",
+    "黑客帝国复兴",
+    "黑客帝国矩阵重启",
+    "heikediguojuzhenzhongqi",
+    "heikediguojuzhenzhongqiguoyu",
+    "黑客帝国：矩阵重启",
+    "黑客帝国:矩阵重启国语"
+   ],
+   "content_kind": "movie",
+   "year": 2021,
+   "area": "美国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 59.53,
+   "playback_count": 31
+  },
+  {
+   "id": "av_FAKE_CARD_029",
+   "work_id": "work:yj:4e41d28c4b76dd1d63aa",
+   "selected_variant_id": "av_FAKE_CARD_029",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_029",
+     "work_id": "work:yj:4e41d28c4b76dd1d63aa",
+     "title": "黑客悲情",
+     "year": 2011,
+     "has_playback": true,
+     "playback_count": 21,
+     "heat_value": 29.95,
+     "updated_at": "2026-11-16T10:30:29.218Z",
+     "selected": true
+    }
+   ],
+   "title": "黑客悲情",
+   "aliases": [
+    "黑客帝国30",
+    "heikebeiqing",
+    "heikebeiqing2011",
+    "黑客悲情 2011",
+    "马里奥超级爆笑动漫"
+   ],
+   "content_kind": "movie",
+   "year": 2011,
+   "area": "中国大陆",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 29.95,
+   "playback_count": 21
+  },
+  {
+   "id": "av_FAKE_CARD_030",
+   "work_id": "work:yj:369e076853a957aa120c",
+   "selected_variant_id": "av_FAKE_CARD_030",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_030",
+     "work_id": "work:yj:369e076853a957aa120c",
+     "title": "重装上阵",
+     "year": 2017,
+     "has_playback": true,
+     "playback_count": 18,
+     "heat_value": 48.48,
+     "updated_at": "2026-11-08T12:40:30.369Z",
+     "selected": true
+    }
+   ],
+   "title": "重装上阵",
+   "aliases": [
+    "22世纪杀人网络2决战未来港",
+    "骇客帝国2",
+    "骇客任务重装上阵台",
+    "黑客帝国2",
+    "廿二世纪杀人网络2决战未来",
+    "抢救巴迪台",
+    "威尼斯往事",
+    "重装上阵onceuponatimeinvenice",
+    "goingunder",
+    "zhongzhuangshangzhen"
+   ],
+   "content_kind": "movie",
+   "year": 2017,
+   "area": "美国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 48.48,
+   "playback_count": 18
+  },
+  {
+   "id": "av_FAKE_CARD_031",
+   "work_id": "work:yj:b8cddb3e40d483359dff",
+   "selected_variant_id": "av_FAKE_CARD_031",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_031",
+     "work_id": "work:yj:b8cddb3e40d483359dff",
+     "title": "删除病毒码",
+     "year": 2013,
+     "has_playback": true,
+     "playback_count": 2,
+     "heat_value": 27.31,
+     "updated_at": "2026-11-01T21:34:44.790Z",
+     "selected": true
+    }
+   ],
+   "title": "删除病毒码",
+   "aliases": [
+    "删除",
+    "shanchubingduma"
+   ],
+   "content_kind": "movie",
+   "year": 2013,
+   "area": "美国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 27.31,
+   "playback_count": 2
+  },
+  {
+   "id": "av_FAKE_CARD_032",
+   "work_id": "work:yj:85b72c93d11d0e3161c1",
+   "selected_variant_id": "av_FAKE_CARD_032",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_032",
+     "work_id": "work:yj:85b72c93d11d0e3161c1",
+     "title": "虚拟决斗",
+     "year": 2014,
+     "has_playback": true,
+     "playback_count": 16,
+     "heat_value": 25.85,
+     "updated_at": "2026-09-08T06:00:09.516Z",
+     "selected": true
+    }
+   ],
+   "title": "虚拟决斗",
+   "aliases": [
+    "致命螺旋",
+    "xunijuedou"
+   ],
+   "content_kind": "movie",
+   "year": 2014,
+   "area": "俄罗斯",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 25.85,
+   "playback_count": 16
+  },
+  {
+   "id": "av_FAKE_CARD_033",
+   "work_id": "work:yj:913c14581a023c6f5cae",
+   "selected_variant_id": "av_FAKE_CARD_033",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_033",
+     "work_id": "work:yj:913c14581a023c6f5cae",
+     "title": "刀走偏锋",
+     "year": 2002,
+     "has_playback": true,
+     "playback_count": 22,
+     "heat_value": 33.21,
+     "updated_at": "2026-11-10T16:25:10.223Z",
+     "selected": true
+    }
+   ],
+   "title": "刀走偏锋",
+   "aliases": [
+    "反智特工",
+    "归零",
+    "归零反智特工",
+    "daozoupianfeng"
+   ],
+   "content_kind": "movie",
+   "year": 2002,
+   "area": "美国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 33.21,
+   "playback_count": 22
+  },
+  {
+   "id": "av_FAKE_CARD_034",
+   "work_id": "work:yj:b8e1ddf02380b6605608",
+   "selected_variant_id": "av_FAKE_CARD_034",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_034",
+     "work_id": "work:yj:b8e1ddf02380b6605608",
+     "title": "凡体",
+     "year": 2025,
+     "has_playback": true,
+     "playback_count": 10,
+     "heat_value": 48.21,
+     "updated_at": "2026-11-13T12:13:03.426Z",
+     "selected": true
+    }
+   ],
+   "title": "凡体",
+   "aliases": [
+    "fanti"
+   ],
+   "content_kind": "movie",
+   "year": 2025,
+   "area": "英国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 48.21,
+   "playback_count": 10
+  },
+  {
+   "id": "av_FAKE_CARD_035",
+   "work_id": "work:yj:b98442f389aa31e2bfc3",
+   "selected_variant_id": "av_FAKE_CARD_035",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_035",
+     "work_id": "work:yj:b98442f389aa31e2bfc3",
+     "title": "异次元骇客",
+     "year": 1999,
+     "has_playback": true,
+     "playback_count": 28,
+     "heat_value": 40.02,
+     "updated_at": "2026-11-09T02:40:39.432Z",
+     "selected": true
+    }
+   ],
+   "title": "异次元骇客",
+   "aliases": [
+    "13阶梯",
+    "十三层",
+    "十三层楼",
+    "十三度凶间",
+    "十三度凶间十三度凶兆13阶梯十三层楼十三层the13thfloor",
+    "十三度凶兆",
+    "十三阶梯",
+    "the13thfloor",
+    "thethirteenthfloor",
+    "yiciyuanhaike",
+    "yiciyuanhaikeguoyu",
+    "yiciyuanhaikethethirteenthfloor",
+    "赛罗奥特曼外传 有机生命体的危机：STAGE2 流星的誓言（普通话）",
+    "异次元骇客 The Thirteenth Floor",
+    "异次元骇客国语",
+    "异次元骇客英语"
+   ],
+   "content_kind": "movie",
+   "year": 1999,
+   "area": "美国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 40.02,
+   "playback_count": 28
+  },
+  {
+   "id": "av_FAKE_CARD_036",
+   "work_id": "work:yj:f30fc96311b6781f23a9",
+   "selected_variant_id": "av_FAKE_CARD_036",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_036",
+     "work_id": "work:yj:f30fc96311b6781f23a9",
+     "title": "世界旦夕之间",
+     "year": 1973,
+     "has_playback": true,
+     "playback_count": 13,
+     "heat_value": 27.08,
+     "updated_at": "2026-11-03T02:36:04.430Z",
+     "selected": true
+    }
+   ],
+   "title": "世界旦夕之间",
+   "aliases": [
+    "电路世界",
+    "shijiedanxizhijian",
+    "worldonawire"
+   ],
+   "content_kind": "movie",
+   "year": 1973,
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 27.08,
+   "playback_count": 13
+  },
+  {
+   "id": "av_FAKE_CARD_037",
+   "work_id": "work:yj:cf1878f45531ee8d2428",
+   "selected_variant_id": "av_FAKE_CARD_037",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_037",
+     "work_id": "work:yj:cf1878f45531ee8d2428",
+     "title": "黑客（原声）",
+     "year": 2000,
+     "has_playback": true,
+     "playback_count": 2,
+     "heat_value": 42.02,
+     "updated_at": "2026-10-01T21:11:04.657Z",
+     "selected": true
+    }
+   ],
+   "title": "黑客（原声）",
+   "aliases": [
+    "黑客",
+    "黑客 原声版"
+   ],
+   "content_kind": "movie",
+   "year": 2000,
+   "area": "美国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 42.02,
+   "playback_count": 2
+  },
+  {
+   "id": "av_FAKE_CARD_038",
+   "work_id": "work:yj:665c877a00eaf169a7c2",
+   "selected_variant_id": "av_FAKE_CARD_038",
+   "season_count": 1,
+   "seasons": [
+    {
+     "variant_id": "av_FAKE_CARD_038",
+     "work_id": "work:yj:665c877a00eaf169a7c2",
+     "title": "超感猎杀 第1季",
+     "season_number": 1,
+     "season_label": "第1季",
+     "year": 2015,
+     "has_playback": true,
+     "playback_count": 254,
+     "heat_value": 88.31,
+     "updated_at": "2026-11-13T16:27:04.971Z",
+     "selected": true
+    }
+   ],
+   "title": "超感猎杀 第1季",
+   "aliases": [
+    "超感猎杀",
+    "八感",
+    "超感8人组",
+    "超感八人",
+    "超感八人组超感八人八感超感8人组",
+    "超感猎杀1季sense81",
+    "超感猎杀一sense8season1",
+    "科幻暖心剧",
+    "chaoganliesha",
+    "chaoganlieshadiyiji",
+    "sense81",
+    "sense8season1",
+    "超感猎杀 第一季",
+    "超感猎杀第一季"
+   ],
+   "content_kind": "series",
+   "year": 2015,
+   "area": "美国",
+   "availability": {
+    "state": "playable",
+    "label": "可播放",
+    "playable": true,
+    "disabled": false,
+    "source": "catalog"
+   },
+   "heat_value": 88.31,
+   "playback_count": 254
+  }
+ ],
+ "pagination": {
+  "page": 1,
+  "limit": 20,
+  "offset": 0,
+  "total": 200,
+  "returned_count": 18,
+  "has_more": true,
+  "next_page": 2,
+  "next_offset": 20,
+  "next_cursor": "eyJ2IjoxLCJvIjoyMCwiZiI6IjNLZm5vdlFCOTl2OVZ6S0EifQ"
+ }
+}

@@ -1,0 +1,151 @@
+{
+ "adult": false,
+ "backdrop_path": null,
+ "belongs_to_collection": null,
+ "budget": 0,
+ "genres": [],
+ "homepage": "",
+ "id": 603,
+ "imdb_id": null,
+ "original_language": "en",
+ "original_title": "The Matrix",
+ "overview": "",
+ "popularity": 1,
+ "poster_path": null,
+ "production_companies": [],
+ "production_countries": [],
+ "release_date": "1999-03-30",
+ "revenue": 0,
+ "runtime": 0,
+ "spoken_languages": [],
+ "status": "Released",
+ "tagline": "",
+ "title": "黑客帝国",
+ "video": false,
+ "vote_average": 0,
+ "vote_count": 0,
+ "translations": {
+  "id": 603,
+  "translations": [
+   {
+    "iso_3166_1": "US",
+    "iso_639_1": "en",
+    "name": "English",
+    "english_name": "English",
+    "data": {
+     "title": "The Matrix",
+     "overview": null,
+     "homepage": null,
+     "tagline": null
+    }
+   },
+   {
+    "iso_3166_1": "CN",
+    "iso_639_1": "zh",
+    "name": "中文",
+    "english_name": "Mandarin",
+    "data": {
+     "title": "黑客帝国",
+     "overview": null,
+     "homepage": null,
+     "tagline": null
+    }
+   },
+   {
+    "iso_3166_1": "TW",
+    "iso_639_1": "zh",
+    "name": "中文",
+    "english_name": "Mandarin",
+    "data": {
+     "title": "駭客任務",
+     "overview": null,
+     "homepage": null,
+     "tagline": null
+    }
+   },
+   {
+    "iso_3166_1": "HK",
+    "iso_639_1": "zh",
+    "name": "中文",
+    "english_name": "Cantonese",
+    "data": {
+     "title": "22世紀殺人網絡",
+     "overview": null,
+     "homepage": null,
+     "tagline": null
+    }
+   },
+   {
+    "iso_3166_1": "GB",
+    "iso_639_1": "en",
+    "name": "English",
+    "english_name": "English",
+    "data": {
+     "title": "The Matrix",
+     "overview": null,
+     "homepage": null,
+     "tagline": null
+    }
+   },
+   {
+    "iso_3166_1": "JP",
+    "iso_639_1": "ja",
+    "name": "日本語",
+    "english_name": "Japanese",
+    "data": {
+     "title": "マトリックス",
+     "overview": null,
+     "homepage": null,
+     "tagline": null
+    }
+   },
+   {
+    "iso_3166_1": "KR",
+    "iso_639_1": "ko",
+    "name": "한국어/조선말",
+    "english_name": "Korean",
+    "data": {
+     "title": "매트릭스",
+     "overview": null,
+     "homepage": null,
+     "tagline": null
+    }
+   }
+  ]
+ },
+ "alternative_titles": {
+  "id": 603,
+  "titles": [
+   {
+    "iso_3166_1": "US",
+    "title": "The Matrix",
+    "type": ""
+   },
+   {
+    "iso_3166_1": "CN",
+    "title": "黑客帝国",
+    "type": ""
+   },
+   {
+    "iso_3166_1": "TW",
+    "title": "駭客任務",
+    "type": ""
+   },
+   {
+    "iso_3166_1": "HK",
+    "title": "22世紀殺人網絡",
+    "type": ""
+   },
+   {
+    "iso_3166_1": "RU",
+    "title": "Матрица",
+    "type": ""
+   },
+   {
+    "iso_3166_1": "DE",
+    "title": "Matrix",
+    "type": ""
+   }
+  ]
+ }
+}
