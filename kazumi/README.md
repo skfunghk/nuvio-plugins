@@ -43,6 +43,19 @@ TMDB 中文名 → POST api.bgm.tv/v0/search/subjects（type=2 动画）→ 按�
 
 详见 [`docs/matching-notes.md`](../docs/matching-notes.md)。
 
+## 动画 ID 点样入嚟（0.2.0）
+
+Nuvio 对动画条目唔系用片名配资源，而系：
+
+```
+videoId → ensureTmdbId()  →  有 TMDB id：传 TMDB id（season = null + 绝对集号）
+                          →  冇：传 kitsu: / anilist: / mal: 原 id（season = null + 绝对集号）
+```
+
+所以 0.2.0 开始插件收 `kitsu:` / `mal:` / `anilist:` id，用各家公开 API 换片名；`anidb:` 明确报错。
+绝对集号会按站点「逐季拆条目」的顺序累加（进击的巨人 25+12+12+10+9 → 最终季第 9 集）。
+真网络验证：`node test/live-tracker.mjs`（5/5 场景拿到线路）。
+
 ## 做到咩、做唔到咩
 
 - 收到 TMDB ID 之后，插件用中文／英文／日文片名（TMDB `zh-CN` + 翻译 + 别名，最多试 4 个名）去各规则站点搜，再攞集数、抽 m3u8／mp4 直链。动漫集数用绝对集号（NuvioTV 传 `season = null` + 绝对集数，插件识处理）。

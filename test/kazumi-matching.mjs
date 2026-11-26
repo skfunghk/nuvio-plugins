@@ -71,7 +71,10 @@ const logs = [];
 const sandbox = {
   module: { exports: {} },
   console: { log: (...a) => logs.push(a.join(' ')), warn: (...a) => logs.push(a.join(' ')), error: (...a) => logs.push(a.join(' ')) },
-  fetch: async (url, init) => { calls.push(String(url)); return response(routes(url, init)); },
+  fetch: async (url, init) => {
+    calls.push(String(url));
+    return response(routes(url, init));
+  },
   SCRAPER_ID: 'repo:kazumi',
   TMDB_API_KEY: 'fake-key',
   setTimeout: undefined,
@@ -99,6 +102,7 @@ vm.createContext(sandbox);
 vm.runInContext(code, sandbox, { filename: 'kazumi.js' });
 
 const getStreams = sandbox.module.exports.getStreams;
+
 const streams = await getStreams('14285', 'tv', 1, 1).catch((error) => ({ error }));
 
 const joined = logs.join('\n');
@@ -127,4 +131,5 @@ if (Array.isArray(streams)) {
 }
 console.log('─'.repeat(60));
 console.log(failed ? `${failed} 项未通过` : '全部通过');
+console.log('ℹ 动画 tracker（kitsu:/mal:/anilist:）走真网络：node test/live-tracker.mjs');
 process.exit(failed ? 1 : 0);

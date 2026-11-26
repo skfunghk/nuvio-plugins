@@ -58,12 +58,14 @@
 (function () {
   'use strict';
 
-  var VERSION = '0.1.1';
+  var VERSION = '0.2.0';
   var TAG = '[kazumi]';
 
   var SOFT_DEADLINE_MS = 34000;
   var RETRY_BUDGET_MS = 15000;
   var BGM_BUDGET_MS = 6000;         // Bangumi 补名最多花这么久，超时就不补
+  var TRACKER_ID = /^(kitsu|mal|anilist|anidb):(\d+)(?::(\d+))?$/i;
+  var FINAL_SEASON = /最终|最終|完结篇|完結篇|final/i;
   var VERIFY_UNTIL_MS = 20000;
   var REMOTE_UNTIL_MS = 22000;
   var MAX_SEARCH_TITLES = 4;
@@ -5039,6 +5041,84 @@
   }
 
 
+  // ---------------------------------------------------- 动画 tracker 的片名
+  // Nuvio 的动画条目用 kitsu:/mal:/anilist: 前三段式 ID，季/集坐标不在里面，只有绝对集号。
+  // 这里按站点各家的公开 API 把 ID 换成片名；anidb 没有公开 JSON，明确报错而不是猜。
+  async function getJson(url, options) {
+    var result = await rawFetch(url, options || { method: 'GET', headers: {} });
+    if (!result.ok) {
+      throw fail(result.status === 404 ? 'NOT_FOUND' : 'UPSTREAM_ERROR',
+        url.replace(/^https:\/\//, '').split('/')[0] + ' 返回 ' + result.status);
+    }
+    var data = parseJson(result.body);
+    if (!data) throw fail('UPSTREAM_CHANGED', url.split('/')[2] + ' 返回了无法解析的数据');
+    return data;
+  }
+
+  function trackerTitles(kind, id) {
+    if (kind === 'kitsu') {
+      return getJson('https://kitsu.io/api/edge/anime/' + id, {
+        method: 'GET',
+        headers: { Accept: 'application/vnd.api+json' },
+      }).then(function (body) {
+        var a = body && body.data && body.data.attributes;
+        if (!a) return null;
+        var names = [a.canonicalTitle];
+        if (a.titles) {
+          names.push(a.titles.en, a.titles.en_jp, a.titles.ja_jp, a.titles.en_us);
+        }
+        if (Array.isArray(a.abbreviatedTitles)) names = names.concat(a.abbreviatedTitles);
+        return { names: names, year: yearOf(a.startDate) };
+      });
+    }
+    if (kind === 'anilist') {
+      var query = 'query($id:Int){Media(id:$id,type:ANIME){title{romaji english native}synonyms startDate{year}}}';
+      return getJson('https://graphql.anilist.co', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ query: query, variables: { id: Number(id) } }),
+      }).then(function (body) {
+        var media = body && body.data && body.data.Media;
+        if (!media) return null;
+        var names = [media.title && media.title.native, media.title && media.title.romaji, media.title && media.title.english];
+        if (Array.isArray(media.synonyms)) names = names.concat(media.synonyms);
+        return { names: names, year: media.startDate && media.startDate.year };
+      });
+    }
+    if (kind === 'mal') {
+      return getJson('https://api.jikan.moe/v4/anime/' + id).then(function (body) {
+        var a = body && body.data;
+        if (!a) return null;
+        var names = [a.title, a.title_english, a.title_japanese];
+        if (Array.isArray(a.titles)) {
+          for (var i = 0; i < a.titles.length; i++) names.push(a.titles[i] && a.titles[i].title);
+        }
+        if (Array.isArray(a.synonyms)) names = names.concat(a.synonyms);
+        var year = a.aired && a.aired.prop && a.aired.prop.from && a.aired.prop.from.year;
+        return { names: names, year: year };
+      });
+    }
+    return Promise.reject(fail('HOST_UNSUPPORTED', 'anidb ID 没有公开的片名接口，请改用 TMDB / kitsu / mal / anilist 条目'));
+  }
+
+  async function trackerInfo(args) {
+    var data = await trackerTitles(args.tracker.kind, args.tracker.id);
+    var titles = [];
+    var seen = {};
+    var list = data && Array.isArray(data.names) ? data.names : [];
+    for (var i = 0; i < list.length; i++) pushTitle(titles, seen, list[i], 1);
+    if (!titles.length) throw fail('NOT_FOUND', 'tracker 没有给出片名（' + args.tracker.kind + ':' + args.tracker.id + '）');
+    return {
+      titles: titles,
+      titlesByKey: {},
+      seasons: [],
+      totalEpisodes: 0,
+      hits: {},
+      flat: true,                 // 没有 TMDB 的分季数据：绝对集号直接对整部条目的位置
+      firstYear: data.year || null,
+    };
+  }
+
   // ------------------------------------------------- 中文名对齐（Bangumi 桥）
   // Nuvio 只给 TMDB id。TMDB 的 zh-CN / zh-TW 名未必等于中文站的写法（繁体 vs 简体、
   // 官方译名 vs 民间译名），所以再用 Bangumi 的 name_cn 与「别名」补一批候选。
@@ -5436,6 +5516,11 @@
     } else if (entry.tagged && compact(entry.rest.replace(new RegExp(LANGUAGE_TAG.source, 'g'), '')) === '') {
       entry.group = 'whole';
       entry.score += 42;
+    } else if (FINAL_SEASON.test(entry.rest)) {
+      // 「最终季 / 完结篇 / Final Season」没有季号，但确实排在所有季之后：绝对集号累加时放在最后试。
+      entry.group = 'season';
+      entry.chain = 900 + (entry.part ? entry.part.order : 0);
+      entry.score += 1;
     } else {
       return null;
     }
@@ -5876,12 +5961,32 @@
     var titles = searchTitles(info);
     var count = Math.min(titles.length, MAX_SEARCH_TITLES);
     var last = null;
+    // tracker 条目（绝对集号）没有分季数据：一个片名的搜索结果常常只覆盖前几季，
+    // 所以最多合并两个片名的结果，让后面几季的条目也进候选。
+    var mergeLimit = info.flat ? 2 : 1;
+    var merged = [];
+    var mergedSeen = {};
+    var accepted = 0;
     for (var t = 0; t < count; t++) {
       if (Date.now() > run.deadline) throw timeout('搜索 ' + rule.name);
       var found = await ruleSearch(rule, titles[t].text);
       var entries = rankEntries(found.items, info, want);
       last = { items: found.items, entries: entries, title: titles[t].text, status: found.status };
-      if (entries.length) break;
+      if (entries.length) {
+        accepted++;
+        for (var m = 0; m < found.items.length; m++) {
+          var key = String(found.items[m].src || found.items[m].name || m);
+          if (mergedSeen[key]) continue;
+          mergedSeen[key] = true;
+          merged.push(found.items[m]);
+        }
+        if (accepted >= mergeLimit) break;
+      } else if (accepted) {
+        break;
+      }
+    }
+    if (merged.length) {
+      last = { items: merged, entries: rankEntries(merged, info, want), title: last ? last.title : '', status: last ? last.status : 200 };
     }
     if (!last || !last.entries.length) throw fail('NOT_FOUND', rule.name + ': 搜索结果里没有「' + (last ? last.title : '') + '」');
     info.hits[last.title] = (info.hits[last.title] || 0) + 1;
@@ -5897,7 +6002,8 @@
     function roadsOf(entry) {
       var key = entry.item.src;
       if (Object.prototype.hasOwnProperty.call(cache, key)) return Promise.resolve(cache[key]);
-      if (fetches >= MAX_CHAPTER_FETCHES) return Promise.resolve([]);
+      // tracker 条目按季拆成多个站点条目，逐条累加要读好几条剧集列表，预算放宽到 6 条。
+      if (fetches >= (info.flat ? 6 : MAX_CHAPTER_FETCHES)) return Promise.resolve([]);
       if (Date.now() > run.deadline) return Promise.reject(timeout('剧集 ' + rule.name));
       fetches++;
       return ruleChapters(rule, entry.item).then(function (roads) { cache[key] = roads; return roads; }, function (error) {
@@ -5935,6 +6041,44 @@
     // a site that lists only "第三季 Part.2" and no plain "第三季": the lowest part starts the season
     if (!heads.length && continuations.length && continuations[0].chain < 50) heads.push(continuations.shift());
     others.sort(function (a, b) { return a.chain - b.chain || b.score - a.score || a.order - b.order; });
+
+    // 0. tracker 条目（kitsu:/mal:/anilist:）没有 TMDB 分季数据。站点的动画往往按季拆成多个条目
+    //    （进击的巨人 25 / 第二季 12 / 第三季 12 / 第三季 Part.2 10 / 最终季 16 …），绝对集号就是
+    //    这些条目首尾相接的位置。所以按季号升序逐条累加，减到落点为止；季号解析不出来（「最终季」
+    //    「完结篇」）的排在后面，用剩下的集号继续找。
+    if (info.flat && entries.length) {
+      // 季号排序：第 N 季按 N；裸标题当第一季；「最终季 / 完结篇 / Part.N」这类没有季号却排在后面的，
+      // 用很大的 rank 让它们接在最后。
+      var seasonRank = function (entry) {
+        if (entry.marker !== null && entry.marker !== undefined) return entry.marker * 10 + entry.chain;
+        var name = String(entry.item.name || '');
+        if (/最终|終|完结篇|完結篇|final/i.test(name)) return 900 + entry.chain;
+        return 10 + entry.chain;
+      };
+      var ordered = entries.slice().sort(function (a, b) {
+        return seasonRank(a) - seasonRank(b) || b.score - a.score || a.order - b.order;
+      });
+      var remaining = want.episode;
+      var tried = 0;
+      for (var f = 0; f < ordered.length && tried < 5 && Date.now() < run.deadline; f++) {
+        var step = ordered[f];
+        var flatRoads = await roadsOf(step);
+        tried++;
+        if (!flatRoads.length) continue;
+        var count = longest(flatRoads);
+        if (!count) continue;
+        if (remaining <= count) {
+          var flatFound = take(step, remaining);
+          if (flatFound) {
+            flatFound.whole = step.group === 'whole';
+            emit('log', rule.name + ': 绝对第 ' + want.episode + ' 集按季累加落在「' + step.item.name + '」第 ' + remaining + ' 项');
+            return flatFound;
+          }
+          continue;                      // 这个条目点得进去但取不到地址，接着往后减
+        }
+        remaining -= count;
+      }
+    }
 
     // 1. the entries that name the wanted season, in the order of their parts; an entry of a later
     //    season continues the chain only while TMDB counts more episodes than were read so far.
@@ -6054,10 +6198,30 @@
   function parseArgs(tmdbId, mediaType, season, episode) {
     var id = String(tmdbId === undefined || tmdbId === null ? '' : tmdbId).trim();
     var type = String(mediaType || '').toLowerCase();
+    // 动画条目的 videoId 是 kitsu:/mal:/anilist:/anidb: 三段式（NuvioTV
+    // PluginEpisodeRequestRules.kt）；转不到 TMDB 时宿主把它原样传进来，season = null、
+    // episode = 绝对集号。这里照样接住，片名改由 tracker 的 API 提供。
+    var tracker = TRACKER_ID.exec(id);
+    if (tracker) {
+      var trackerEpisode = tracker[3] ? Number(tracker[3]) : null;
+      var absolute = Number(episode);
+      if (!isFinite(absolute) || Math.floor(absolute) !== absolute || absolute < 1) {
+        absolute = trackerEpisode;
+      }
+      if (!isFinite(absolute) || !absolute || absolute < 1) {
+        throw fail('BAD_ARGUMENT', '需要集编号（收到 ' + (episode === undefined || episode === null ? '空' : episode) + '）');
+      }
+      if (type === 'movie') throw fail('BAD_ARGUMENT', 'Kazumi 规则只有动画剧集，没有电影');
+      return {
+        tmdbId: null,
+        tracker: { kind: tracker[1].toLowerCase(), id: tracker[2] },
+        episode: absolute,
+        season: null,
+        absolute: true,
+      };
+    }
     if (!/^\d+$/.test(id)) {
-      // kitsu:/mal:/anilist: ids arrive when the host could not map them to TMDB; titles are
-      // looked up on TMDB, so there is nothing to search with.
-      throw fail('BAD_ARGUMENT', '只支持 TMDB 数字 ID（收到 ' + (id || '空') + '）');
+      throw fail('BAD_ARGUMENT', '只支持 TMDB 数字 ID 或 kitsu:/mal:/anilist: ID（收到 ' + (id || '空') + '）');
     }
     if (type === 'movie') throw fail('BAD_ARGUMENT', 'Kazumi 规则只有动画剧集，没有电影');
     if (type !== 'tv' && type !== 'series' && type !== 'show') throw fail('BAD_ARGUMENT', '不支持的媒体类型：' + (type || '空'));
@@ -6089,10 +6253,11 @@
     try {
       var args = parseArgs(tmdbId, mediaType, season, episode);
       run.experimental = entryConfig(typeof SCRAPER_ID === 'string' ? SCRAPER_ID : '').experimental;
-      emit('log', 'v' + VERSION + (run.experimental ? ' (+experimental)' : '') + ' tmdb=' + args.tmdbId + ' ' +
+      emit('log', 'v' + VERSION + (run.experimental ? ' (+experimental)' : '') + ' id=' +
+        (args.tracker ? args.tracker.kind + ':' + args.tracker.id : args.tmdbId) + ' ' +
         (args.absolute ? '绝对第 ' + args.episode + ' 集' : 'S' + args.season + 'E' + args.episode));
 
-      var info = await tmdbInfo(args.tmdbId);
+      var info = args.tracker ? await trackerInfo(args) : await tmdbInfo(args.tmdbId);
       await augmentTitles(info);
       indexTitles(info);
       var want = makeWant(args, info);
