@@ -7,8 +7,8 @@
     {
       "id": "kazumi",
       "name": "Kazumi 规则",
-      "description": "按 TMDB 片名（并用 Bangumi 补中文别名）在 Kazumi 规则站点搜索动画剧集，返回 m3u8/mp4 直链。只用已实测可用的规则（giriGiriLove）；规则文件运行时从 KazumiRules 仓库读取，仓库不通时用内置快照。",
-      "version": "0.2.0",
+      "description": "按 id（TMDB / kitsu / mal / anilist，经 ani.zip 映射）取片名在 Kazumi 规则站点搜索动画剧集，返回 m3u8/mp4 直链。只用已实测可用的规则（giriGiriLove）；规则文件运行时从 KazumiRules 仓库读取，仓库不通时用内置快照。",
+      "version": "0.3.0",
       "filename": "kazumi.js",
       "supportedTypes": [
         "tv"
@@ -27,7 +27,7 @@
       "id": "kazumi-experimental",
       "name": "Kazumi 规则（实验）",
       "description": "同上，另加实验规则（akianime、MXdm、ezdmw、AGE）：能搜到条目、读到剧集和播放页里的地址，但 2026-11-26 测试时这些地址返回 403/404，未能确认可播放。会和「Kazumi 规则」重复，二选一即可。",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "filename": "kazumi.js",
       "supportedTypes": [
         "tv"

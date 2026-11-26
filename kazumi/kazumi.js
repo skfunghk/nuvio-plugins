@@ -58,7 +58,7 @@
 (function () {
   'use strict';
 
-  var VERSION = '0.2.0';
+  var VERSION = '0.3.0';
   var TAG = '[kazumi]';
 
   var SOFT_DEADLINE_MS = 34000;
@@ -66,6 +66,9 @@
   var BGM_BUDGET_MS = 6000;         // Bangumi 补名最多花这么久，超时就不补
   var TRACKER_ID = /^(kitsu|mal|anilist|anidb):(\d+)(?::(\d+))?$/i;
   var FINAL_SEASON = /最终|最終|完结篇|完結篇|final/i;
+  // ani.zip 是跨库映射服务：给任一 id 就能拿到 TMDB/TVDB id、多语言片名，以及「第 N 集 → 第几季第几集」。
+  var ANIZIP_API = 'https://api.ani.zip/mappings';
+  var ANIZIP_QUERY = { kitsu: 'kitsu_id', mal: 'mal_id', anilist: 'anilist_id', tmdb: 'themoviedb_id', tvdb: 'thetvdb_id' };
   var VERIFY_UNTIL_MS = 20000;
   var REMOTE_UNTIL_MS = 22000;
   var MAX_SEARCH_TITLES = 4;
@@ -5041,6 +5044,45 @@
   }
 
 
+  // ------------------------------------------------------------ ani.zip 映射
+  // 一次请求就能把 tracker id 换成：TMDB/TVDB id、多语言片名（含 zh-Hant）、以及每集的 S/E 坐标。
+  // 这比「按名字去站点猜」稳：名字来自 id，不是来自搜索；集数坐标也不用按季累加去估。
+  async function anizip(kind, id) {
+    var query = ANIZIP_QUERY[kind];
+    if (!query || !id) return null;
+    var data = null;
+    try {
+      data = await getJson(ANIZIP_API + '?' + query + '=' + encodeURIComponent(String(id)), {
+        method: 'GET',
+        headers: { Accept: 'application/json' },
+      });
+    } catch (error) {
+      emit('warn', 'ani.zip 不可用: ' + (error.code ? error.code + ' ' : '') + error.message);
+      return null;
+    }
+    if (!data) return null;
+    var mappings = data.mappings || {};
+    var titles = data.titles || {};
+    var names = [];
+    for (var i = 0; i < ANIZIP_TITLE_KEYS.length; i++) names.push(titles[ANIZIP_TITLE_KEYS[i]]);
+    var map = {};
+    var episodes = data.episodes || {};
+    for (var key in episodes) {
+      if (!Object.prototype.hasOwnProperty.call(episodes, key)) continue;
+      var row = episodes[key];
+      if (!row || row.seasonNumber == null || row.episodeNumber == null) continue;
+      map[String(Number(key))] = { season: Number(row.seasonNumber), episode: Number(row.episodeNumber) };
+    }
+    return {
+      titles: names,
+      tmdbId: mappings.themoviedb_id ? String(mappings.themoviedb_id) : '',
+      tvdbId: mappings.thetvdb_id ? String(mappings.thetvdb_id) : '',
+      episodeMap: map,
+    };
+  }
+
+  var ANIZIP_TITLE_KEYS = ['zh-Hant', 'zh-Hans', 'zh-TW', 'zh-HK', 'ja', 'x-jat', 'en'];
+
   // ---------------------------------------------------- 动画 tracker 的片名
   // Nuvio 的动画条目用 kitsu:/mal:/anilist: 前三段式 ID，季/集坐标不在里面，只有绝对集号。
   // 这里按站点各家的公开 API 把 ID 换成片名；anidb 没有公开 JSON，明确报错而不是猜。
@@ -5102,21 +5144,57 @@
   }
 
   async function trackerInfo(args) {
-    var data = await trackerTitles(args.tracker.kind, args.tracker.id);
     var titles = [];
     var seen = {};
-    var list = data && Array.isArray(data.names) ? data.names : [];
-    for (var i = 0; i < list.length; i++) pushTitle(titles, seen, list[i], 1);
+    var episodes = {};
+    var tmdbId = '';
+    var year = null;
+
+    // 1) ani.zip：按 id 拿片名 + 集数坐标（最稳，不依赖搜索）
+    var zipped = await anizip(args.tracker.kind, args.tracker.id);
+    if (zipped) {
+      for (var z = 0; z < zipped.titles.length; z++) pushTitle(titles, seen, zipped.titles[z], 1);
+      episodes = zipped.episodeMap;
+      tmdbId = zipped.tmdbId;
+      if (Object.keys(episodes).length) emit('log', 'ani.zip 给出 ' + Object.keys(episodes).length + ' 集的季集坐标');
+    }
+
+    // 2) tracker 自己的 API：补罗马字/英文/别名
+    try {
+      var data = await trackerTitles(args.tracker.kind, args.tracker.id);
+      var list = data && Array.isArray(data.names) ? data.names : [];
+      for (var i = 0; i < list.length; i++) pushTitle(titles, seen, list[i], 2);
+      year = (data && data.year) || null;
+    } catch (error) {
+      if (!titles.length) throw error;
+      emit('warn', args.tracker.kind + ' 补名失败: ' + error.message);
+    }
+
     if (!titles.length) throw fail('NOT_FOUND', 'tracker 没有给出片名（' + args.tracker.kind + ':' + args.tracker.id + '）');
-    return {
+
+    var info = {
       titles: titles,
       titlesByKey: {},
       seasons: [],
       totalEpisodes: 0,
       hits: {},
-      flat: true,                 // 没有 TMDB 的分季数据：绝对集号直接对整部条目的位置
-      firstYear: data.year || null,
+      flat: true,                 // 默认没有 TMDB 分季数据：绝对集号按整部条目的位置
+      episodeMap: episodes,
+      firstYear: year,
     };
+
+    // 3) 有 TMDB id 且宿主给了 key：把分季表也拿到，绝对集号就能按 TMDB 分季定位
+    if (tmdbId && hostTmdbKey()) {
+      try {
+        var t = await tmdbInfo(tmdbId);
+        for (var k = 0; k < t.titles.length; k++) pushTitle(titles, seen, t.titles[k].text, 2);
+        if (t.seasons.length) { info.seasons = t.seasons; info.totalEpisodes = t.totalEpisodes; info.flat = false; }
+        info.firstYear = info.firstYear || t.firstYear;
+      } catch (error) {
+        emit('warn', 'TMDB 分季表不可用: ' + error.message);
+      }
+    }
+    return info;
   }
 
   // ------------------------------------------------- 中文名对齐（Bangumi 桥）
@@ -5943,6 +6021,9 @@
     // season = null: the absolute episode number of the whole show. TMDB's per-season counts say
     // which season it is in when they cover it; otherwise the number is used as it is.
     if (!args.absolute) return { season: args.season, episode: args.episode, absolute: false, mapped: false };
+    // ani.zip 的「第 N 集 → 季/集」最准：有就直接用站点的分季逻辑，不必按季累加去估
+    var mapped = info.episodeMap && info.episodeMap[String(args.episode)];
+    if (mapped) return { season: mapped.season, episode: mapped.episode, absolute: false, mapped: true };
     var place = locateAbsolute(info, args.episode);
     return place ? { season: place.season, episode: place.episode, absolute: false, mapped: true }
       : { season: null, episode: args.episode, absolute: true, mapped: false };

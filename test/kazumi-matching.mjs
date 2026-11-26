@@ -46,6 +46,30 @@ const SITE_SEARCH = (query) => ({
 });
 
 const calls = [];
+// 场景 B（id → ani.zip → 站点）：只用 ani.zip 给的繁体名去搜，命中一集 12 部的动画。
+const FX = { rows: [{ vod_id: '27179', vod_name: 'FX戰士久留美' }], eps: 12 };
+const routesId = (url) => {
+  const u = String(url);
+  if (u.startsWith('https://api.ani.zip/mappings')) {
+    return { json: {
+      mappings: { themoviedb_id: 311842, thetvdb_id: 472962 },
+      titles: { 'zh-Hant': 'FX戰士久留美', ja: 'FX戦士くるみちゃん', en: 'FX Fighter Kurumi-chan', 'x-jat': 'FX Senshi Kurumi-chan' },
+      episodes: { 1: { seasonNumber: 1, episodeNumber: 1 }, 2: { seasonNumber: 1, episodeNumber: 2 } },
+    } };
+  }
+  if (u.startsWith('https://api.bgm.tv')) return { status: 404, text: '' };
+  if (u.includes('get_list')) {
+    const hit = /FX|久留美|Kurumi/i.test(decodeURIComponent(u));
+    return { json: { info: { rows: hit ? FX.rows : [] } } };
+  }
+  if (u.startsWith('https://ana.example/')) return { status: 200, text: 'ftypisom', type: 'video/mp4' };   // 地址探测
+  if (u.includes('get_detail')) {
+    const eps = Array.from({ length: FX.eps }, (_, i) => `${String(i + 1).padStart(2, '0')}$https://ana.example/fx/${String(i + 1).padStart(2, '0')}.mp4`).join('#');
+    return { json: { info: { vod_id: '27179', vod_name: 'FX戰士久留美', vod_play_from: 'chs', vod_play_note: '', vod_play_server: '', vod_play_url: eps } } };
+  }
+  return { status: 404, text: 'not found' };
+};
+
 const routes = (url) => {
   const u = String(url);
   if (u.startsWith('https://api.themoviedb.org/3/tv/14285')) return { json: TMDB_TV };
@@ -61,7 +85,7 @@ const response = (spec) => ({
   status: spec.status || 200,
   statusText: '',
   url: '',
-  headers: { get: () => null },
+  headers: { get: (name) => (String(name).toLowerCase() === 'content-type' ? (spec.type || null) : null) },
   text: async () => (spec.json ? JSON.stringify(spec.json) : (spec.text || '')),
   json: async () => spec.json || null,
   arrayBuffer: async () => new ArrayBuffer(0),
@@ -73,7 +97,7 @@ const sandbox = {
   console: { log: (...a) => logs.push(a.join(' ')), warn: (...a) => logs.push(a.join(' ')), error: (...a) => logs.push(a.join(' ')) },
   fetch: async (url, init) => {
     calls.push(String(url));
-    return response(routes(url, init));
+    return response((sandbox.__routes || routes)(url, init));
   },
   SCRAPER_ID: 'repo:kazumi',
   TMDB_API_KEY: 'fake-key',
@@ -129,6 +153,25 @@ if (Array.isArray(streams)) {
 } else {
   console.log('ℹ 结束状态：' + JSON.stringify(streams.error && (streams.error.code || streams.error.message)));
 }
+// —— 场景 B：anilist id → ani.zip → 站点
+sandbox.__routes = routesId;
+calls.length = 0;
+logs.length = 0;
+const idStreams = await getStreams('anilist:206401:1', 'tv', null, 1).catch((error) => ({ error }));
+const idLog = logs.join('\n');
+const idAsserts = [
+  ['ani.zip 以 anilist_id 查询', calls.some((u) => u.includes('api.ani.zip/mappings?anilist_id=206401'))],
+  ['用 ani.zip 的季集坐标定位', /按 TMDB 分季 = S1E1/.test(idLog)],
+  ['用 ani.zip 的片名去站点搜', calls.some((u) => u.includes('get_list') && decodeURIComponent(u).includes('FX戰士久留美'))],
+  ['拿到线路', Array.isArray(idStreams) && idStreams.length > 0 && /\/fx\/01\.mp4$/.test(String(idStreams[0].url))],
+];
+for (const [name, ok] of idAsserts) {
+  console.log((ok ? '✔ ' : '✖ ') + name);
+  if (!ok) failed++;
+}
+if (Array.isArray(idStreams) && idStreams[0]) console.log('ℹ 线路：' + idStreams[0].url);
+else if (process.env.DUMP) console.log(idLog);
+
 console.log('─'.repeat(60));
 console.log(failed ? `${failed} 项未通过` : '全部通过');
 console.log('ℹ 动画 tracker（kitsu:/mal:/anilist:）走真网络：node test/live-tracker.mjs');

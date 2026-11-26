@@ -149,3 +149,50 @@ NuvioMobile 侧另有 `PluginContentIds.kt`：`pluginContentId()` 会剥掉 `tmd
 - 站点没有对应季度条目时仍会 `NOT_FOUND`（例如站点只有「第二季」而你要第 1 集），
   这种情况换片名也救不了，属于站点片库缺口。
 - 未在真机 Nuvio 里点过 in-app Test（本机没有 sideloaded 版）。
+
+## 11. 0.3.0：改用 ani.zip 做 id 映射（比按名字猜更准）
+
+参考实现：`https://stremio-anime1.vercel.app/plugin/manifest.json`（宿主 `plugin/providers/anime1.js`，v1.1.0，
+同一个作者）。它的做法不是「拿片名去站点搜」，而是：
+
+```
+kitsu id ──► https://api.ani.zip/mappings?kitsu_id=…  ──► TMDB id / TVDB id / 多语言片名 / 每集 S/E 坐标
+                                                        └─ 有 TMDB id 就再取 TMDB 的分季表与翻译名
+```
+
+`api.ani.zip/mappings` 支持 `kitsu_id` / `mal_id` / `anilist_id` / `themoviedb_id` / `thetvdb_id`，
+返回：
+
+| 字段 | 用途 |
+| --- | --- |
+| `mappings.themoviedb_id` | 直接把 tracker id 换成 TMDB 条目，再接 TMDB 的翻译与分季表 |
+| `mappings.thetvdb_id` | TMDB 没有时走 `/find?external_source=tvdb_id` |
+| `titles['zh-Hant'] / ['zh-Hans'] / ja / en / x-jat` | **繁体与简体片名直接从 id 来**，不依赖搜索命中 |
+| `episodes[N].seasonNumber / episodeNumber` | 绝对集号 → 第几季第几集，不用按季累加去估 |
+
+kazumi 0.3.0 采用同一套：
+
+1. `trackerInfo` 先打 ani.zip，片名与集数坐标都来自它；tracker 自己的 API（Kitsu/AniList/Jikan）降级成补名。
+2. `makeWant` 优先用 `episodeMap` 把绝对集号换成 `(season, episode)`，走原来那套经过测试的分季定位；
+   `episodeMap` 没覆盖（例如 kitsu:7442 只有 26 集，而你要第 68 集）才退回按季累加。
+3. 宿主有 `TMDB_API_KEY` 时，用 ani.zip 给的 `themoviedb_id` 取 TMDB 分季表 → `info.flat` 变 false，
+   season 定位完全走 TMDB 语义。
+
+实测（2026-11-27，本机真网络，无 TMDB key）：
+
+| 调用 | ani.zip 映射 | 结果 |
+| --- | --- | --- |
+| `anilist:206401:1`（FX战士久留美） | tmdb 311842 / tvdb 472962 / 12 集 / `zh-Hant` = FX戰士久留美 | 2 条 HLS（繁體 `…CHT/01/playlist.m3u8` + 原版） |
+| `kitsu:7442:1` | tmdb 1429 / 26 集坐标 | S1E1 |
+| `kitsu:7442:30` | 26 集坐标 | 第二季 第 5 项 |
+| `kitsu:7442:68` | 26 集坐标不够 → 按季累加 | 最终季 第 9 项 |
+| `anilist:113415:25` | tmdb 95479 / 25 集坐标 | 第二季 第 1 项 |
+
+离线断言（`node test/kazumi-matching.mjs`，场景 B）：ani.zip 以 `anilist_id` 查询、用它的季集坐标定位、
+用它给的繁体片名去站点搜、拿到线路 —— 4 项全过。
+
+### 为什么这一层比「Bangumi 补名」更靠前
+
+- Bangumi 桥是**按名字搜条目**，要判断相似度、年份，同名不同片会错；ani.zip 是**按 id 换 id**，没有歧义。
+- Bangumi 只给中文名，ani.zip 一次给 TMDB id + 繁体/简体/日文/英文 + 集数坐标。
+- 但两者不冲突：ani.zip 拿不到（小站/新番）时，Bangumi 桥仍然补中文名，作为第二层。
