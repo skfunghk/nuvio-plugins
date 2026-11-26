@@ -58,7 +58,7 @@
 (function () {
   'use strict';
 
-  var VERSION = '0.4.0';
+  var VERSION = '0.4.1';
   var TAG = '[kazumi]';
 
   var SOFT_DEADLINE_MS = 34000;
@@ -5583,7 +5583,14 @@
       if (!Object.prototype.hasOwnProperty.call(info.titlesByKey, known)) continue;
       if (key === known || key.slice(0, known.length) === known) {
         var base = info.titlesByKey[known] - (key === known ? 0 : 10);
-        if (!best || base > best.base || (base === best.base && known.length > best.known.length)) best = { base: base, known: known };
+        // 别名整名命中时 rest 会是空的，季号就被吞掉（「进击的巨人 最终季」整名是 Bangumi 的别名）。
+        // 所以优先选「rest 里还留着季号」的已知片名；同分时选较短的已知名，让 rest 更长。
+        var tail = key.slice(known.length);
+        var marked = tail ? seasonFromTitle(tail) : null;
+        var better = !best
+          || (marked !== null && best.marked === null)
+          || (marked === best.marked && (base > best.base || (base === best.base && known.length < best.known.length)));
+        if (better) best = { base: base, known: known, marked: marked };
       }
     }
     if (!best || best.known.length < 2) {
@@ -6094,13 +6101,15 @@
   function makeWant(args, info) {
     // season = null: the absolute episode number of the whole show. TMDB's per-season counts say
     // which season it is in when they cover it; otherwise the number is used as it is.
-    if (!args.absolute) return { season: args.season, episode: args.episode, absolute: false, mapped: false };
+    if (!args.absolute) return { season: args.season, episode: args.episode, absolute: false, mapped: false, absoluteEpisode: null };
     // ani.zip 的「第 N 集 → 季/集」最准：有就直接用站点的分季逻辑，不必按季累加去估
     var mapped = info.episodeMap && info.episodeMap[String(args.episode)];
-    if (mapped) return { season: mapped.season, episode: mapped.episode, absolute: false, mapped: true };
+    if (mapped) {
+      return { season: mapped.season, episode: mapped.episode, absolute: false, mapped: true, absoluteEpisode: args.episode };
+    }
     var place = locateAbsolute(info, args.episode);
-    return place ? { season: place.season, episode: place.episode, absolute: false, mapped: true }
-      : { season: null, episode: args.episode, absolute: true, mapped: false };
+    return place ? { season: place.season, episode: place.episode, absolute: false, mapped: true, absoluteEpisode: args.episode }
+      : { season: null, episode: args.episode, absolute: true, mapped: false, absoluteEpisode: args.episode };
   }
 
   function wantedSeason(info, want) {
@@ -6331,11 +6340,34 @@
     try {
       hit = await locateEpisode(rule, info, want, found.entries);
     } catch (error) {
-      // an absolute number TMDB placed differently from the site: once more by position alone
-      if (!wantFallback || error.code !== 'NOT_FOUND' || Date.now() > run.deadline) throw error;
-      var again = rankEntries(found.items, info, wantFallback);
-      if (!again.length) throw error;
-      hit = await locateEpisode(rule, info, wantFallback, again);
+      if (error.code !== 'NOT_FOUND' || Date.now() > run.deadline) throw error;
+      // 两条退路：① TMDB 的季集落在站点别的位置；② TMDB 的分季跟站点不一样（咒术回战 TMDB 把两季
+      // 合成 S1=59，站点却是 24+23），这时按站点自己的条目顺序累加才对。
+      var attempts = [];
+      if (wantFallback) attempts.push({ want: wantFallback, info: info });
+      if (want.absoluteEpisode) {
+        var flatInfo = {};
+        for (var own in info) if (Object.prototype.hasOwnProperty.call(info, own)) flatInfo[own] = info[own];
+        flatInfo.flat = true;
+        attempts.push({
+          want: { season: null, episode: want.absoluteEpisode, absolute: true, mapped: false, absoluteEpisode: want.absoluteEpisode },
+          info: flatInfo,
+        });
+      }
+      var lastError = error;
+      for (var a = 0; a < attempts.length && !hit; a++) {
+        var plan = attempts[a];
+        var again = rankEntries(found.items, plan.info, plan.want);
+        if (!again.length) continue;
+        try {
+          hit = await locateEpisode(rule, plan.info, plan.want, again);
+          emit('log', rule.name + ': 换用站点自己的分季顺序命中');
+        } catch (retryError) {
+          lastError = retryError;
+          if (retryError.code !== 'NOT_FOUND') throw retryError;
+        }
+      }
+      if (!hit) throw lastError;
     }
     emit('log', rule.name + ':「' + hit.entry.item.name + '」线路「' + hit.road.name + '」第 ' + hit.position + ' 项 =「' +
       hit.pick.label + '」' + (hit.pick.byLabel ? '(按集号)' : '(按位置)') + (hit.whole ? ' [整部条目]' : ''));
