@@ -58,7 +58,7 @@
 (function () {
   'use strict';
 
-  var VERSION = '0.4.2';
+  var VERSION = '0.5.0';
   var TAG = '[kazumi]';
 
   var SOFT_DEADLINE_MS = 34000;
@@ -6484,6 +6484,191 @@
     return args;
   }
 
+  // ============================================================== 内置源：anime1.me
+  // KazumiRules 的 18 条规则里只有 giriGiriLove 能纯 HTTP 拿到播放地址（见 docs/rule-audit-2026-11-27.md），
+  // 而 anime1.me 的结构完全不同：没有可用的搜索接口，但站点自己维护一份索引 animelist.json，
+  // 每行是一部作品/一季，status 里写着集数区间（「連載中(08)」「29-38」「劇場」）；
+  // 播放靠分集页的 data-apireq 换地址，且换址响应会种 cookie 给 MP4 主机用。
+  // 所以把它做成内置源，跟规则并列跑，而不是硬塞进规则模型。
+  var ANIME1_BASE = 'https://anime1.me';
+  var ANIME1_API = 'https://v.anime1.me/api';
+  var ANIME1_INDEX = 'https://anime1.me/animelist.json';
+  var ANIME1_EPISODE = /\[(\d+(?:\.\d+)?)\]/;
+  var anime1RowsCache = null;
+
+  async function anime1Rows() {
+    if (anime1RowsCache) return anime1RowsCache;
+    var result = await httpText(ANIME1_INDEX, { 'User-Agent': USER_AGENT, Accept: 'application/json' }, 0);
+    if (!result.ok) throw fail('UPSTREAM_ERROR', 'anime1 索引返回 ' + result.status);
+    var rows = parseJson(result.body);
+    if (!Array.isArray(rows) || !rows.length) throw fail('UPSTREAM_CHANGED', 'anime1 索引不是数组');
+    anime1RowsCache = rows.filter(function (r) { return r && r[0] != null; }).map(function (r) {
+      return { id: String(r[0]), name: decodeEntities(String(r[1] || ''), false), status: decodeEntities(String(r[2] || ''), false), year: String(r[3] || '') };
+    });
+    return anime1RowsCache;
+  }
+
+  /** status → {start,end,movie}：站点的集数区间 */
+  function anime1Span(status) {
+    var text = String(status || '');
+    var m = text.match(/(\d+)\s*-\s*(\d+)/);
+    if (m) return { start: Number(m[1]), end: Number(m[2]), movie: false };
+    m = text.match(/連載中\s*[（(]\s*(\d+)\s*[）)]/);
+    if (m) return { start: 1, end: Number(m[1]), movie: false };
+    if (/劇場|剧场/.test(text)) return { start: 0, end: 0, movie: true };
+    return null;
+  }
+
+  /** 片名相似度：精确 100 / 包含 84·66 / CJK 重合 ≥0.85 且 ≥3 字 → 72 */
+  function anime1Score(name, titles) {
+    var norm = function (v) {
+      return String(v || '').toLowerCase().replace(/[\s\u3000×xX]+/g, '')
+        .replace(/[：:·・,，.。!！?？'"“”‘’\-—_()（）\[\]【】/]/g, '');
+    };
+    var key = norm(name);
+    var best = 0;
+    for (var i = 0; i < titles.length; i++) {
+      var q = norm(titles[i].text);
+      if (q.length < 2 || !key) continue;
+      if (key === q) { best = Math.max(best, 100); continue; }
+      if (key.indexOf(q) !== -1 || q.indexOf(key) !== -1) {
+        var shorter = Math.min(key.length, q.length), longer = Math.max(key.length, q.length);
+        best = Math.max(best, shorter >= 4 && shorter / longer >= 0.5 ? 84 : 66);
+        continue;
+      }
+      if (cjkOverlap(name, titles[i].text) >= 0.85 && (String(q).match(/[\u3400-\u9fff]/g) || []).length >= 3) best = Math.max(best, 72);
+    }
+    return best;
+  }
+
+  function anime1Absolute(info, want) {
+    if (want.absoluteEpisode != null) return want.absoluteEpisode;
+    var sum = 0;
+    for (var i = 0; i < info.seasons.length; i++) {
+      var s = info.seasons[i];
+      if (s.number >= 1 && want.season != null && s.number < want.season) sum += s.count;
+    }
+    return sum + (want.episode || 1);
+  }
+
+  function seasonName(info, season) {
+    for (var i = 0; i < info.seasons.length; i++) if (info.seasons[i].number === season) return String(info.seasons[i].name || '');
+    return '';
+  }
+
+  /** 从索引里挑一行：区间要覆盖集号，优先片名精确、其次同季标记 */
+  function anime1Pick(rows, info, want, number) {
+    var abs = anime1Absolute(info, want);
+    var pool = [];
+    for (var i = 0; i < rows.length; i++) {
+      var row = rows[i];
+      var score = anime1Score(row.name, info.titles);
+      if (score < 66) continue;
+      var span = anime1Span(row.status);
+      if (!span || span.movie) continue;
+      var probe = span.start > 1 ? abs : (want.episode || 1);
+      if (probe < span.start || probe > span.end) continue;
+      // 想要第 N 季时，名字里得带这个季号（或 TMDB 的季名），否则可能是别的季
+      if (want.season != null && want.season !== 1 && span.start <= 1) {
+        var marker = seasonFromTitle(row.name);
+        var named = marker === want.season;
+        if (!named) {
+          var signature = nameSignature(seasonName(info, want.season));
+          named = !!(signature && signature.base && compact(row.name).indexOf(signature.base) !== -1);
+        }
+        if (!named) continue;
+      }
+      pool.push({ row: row, score: score, span: span, probe: probe });
+    }
+    if (!pool.length) return null;
+    pool.sort(function (a, b) { return b.score - a.score || a.row.name.length - b.row.name.length; });
+    return pool[0];
+  }
+
+  /** 分类页里按集号找文章（?cat=ID&paged=N，最多 10 页） */
+  async function anime1Post(catId, number) {
+    var seen = {};
+    for (var page = 1; page <= 10; page++) {
+      if (Date.now() > run.deadline) throw timeout('anime1 剧集');
+      var result = await httpText(ANIME1_BASE + '/?cat=' + encodeURIComponent(catId) + '&paged=' + page,
+        { 'User-Agent': USER_AGENT, Referer: ANIME1_BASE + '/' }, 0);
+      if (!result.ok) throw fail('UPSTREAM_ERROR', 'anime1 分类页 ' + result.status);
+      var html = result.body;
+      var blocks = html.match(/<article\b[\s\S]*?<\/article>/gi) || [];
+      var fresh = false;
+      for (var i = 0; i < blocks.length; i++) {
+        var link = /href="(?:https?:\/\/anime1\.me)?\/(\d+)\/?"/i.exec(blocks[i]);
+        if (!link || seen[link[1]]) continue;
+        seen[link[1]] = true;
+        fresh = true;
+        var titleMatch = /class="[^"]*entry-title[^"]*"[^>]*>([\s\S]*?)<\/h[12]>/i.exec(blocks[i]);
+        var title = titleMatch ? decodeEntities(titleMatch[1].replace(/<[^>]+>/g, ''), false).trim() : '';
+        var num = ANIME1_EPISODE.exec(title);
+        var value = num ? Number(num[1]) : null;
+        if (number == null || value === number) return { id: link[1], title: title, num: value };
+      }
+      if (!fresh || html.indexOf('/page/' + (page + 1)) === -1) return null;
+    }
+    return null;
+  }
+
+  /** 分集页 → data-apireq → POST 换地址（顺手收 Set-Cookie） */
+  async function anime1Resolve(postId, label, episodeLabel) {
+    var page = await httpText(ANIME1_BASE + '/' + postId, { 'User-Agent': USER_AGENT, Referer: ANIME1_BASE + '/' }, 0);
+    if (!page.ok) throw fail('UPSTREAM_ERROR', 'anime1 分集页 ' + page.status);
+    var ticket = /data-apireq="([^"]+)"/i.exec(page.body);
+    if (!ticket) throw fail('UPSTREAM_CHANGED', 'anime1 分集页没有取流票据');
+    var payload = decodeEntities(ticket[1], true);
+    try { payload = decodeURIComponent(payload); } catch (e) { /* 已是明文 */ }
+    var result = await rawFetch(ANIME1_API, {
+      method: 'POST',
+      headers: {
+        'User-Agent': USER_AGENT,
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Origin: ANIME1_BASE,
+        Referer: ANIME1_BASE + '/' + postId,
+        Accept: 'application/json',
+      },
+      body: 'd=' + encodeURIComponent(payload),
+    });
+    if (!result.ok) throw fail('UPSTREAM_ERROR', 'anime1 换址 ' + result.status);
+    var data = parseJson(result.body);
+    var list = data && Array.isArray(data.s) ? data.s : [];
+    var out = [];
+    for (var i = 0; i < list.length; i++) {
+      var url = String((list[i] && list[i].src) || '');
+      if (url.indexOf('//') === 0) url = 'https:' + url;
+      if (!isHttpUrl(url)) continue;
+      var headers = { 'User-Agent': USER_AGENT, Referer: ANIME1_BASE + '/', Origin: ANIME1_BASE };
+      var cookie = cookieHeader();
+      if (cookie) headers.Cookie = cookie;
+      out.push({
+        name: 'Anime1 · ' + (episodeLabel || label),
+        title: label + (episodeLabel ? ' · ' + episodeLabel : ''),
+        url: url,
+        quality: 'HD',
+        type: /\.m3u8(\?|$)/i.test(url) ? 'm3u8' : 'mp4',
+        language: 'zh',
+        headers: headers,
+      });
+    }
+    return out;
+  }
+
+  async function anime1Attempt(info, want) {
+    var rows = await anime1Rows();
+    var number = anime1Absolute(info, want);
+    var pick = anime1Pick(rows, info, want, number);
+    if (!pick) { emit('log', 'anime1: 索引里没有区间覆盖第 ' + number + ' 集的作品'); return []; }
+    emit('log', 'anime1: 命中「' + pick.row.name + '」(' + pick.row.status + ')，按第 ' + pick.probe + ' 集找');
+    var post = await anime1Post(pick.row.id, pick.probe);
+    if (!post) { emit('log', 'anime1: 分类页没有第 ' + pick.probe + ' 集的文章'); return []; }
+    var label = pick.row.name + (pick.row.year ? ' (' + pick.row.year + ')' : '');
+    var streams = await anime1Resolve(post.id, label, post.num != null ? '第 ' + post.num + ' 集' : post.title);
+    emit('log', 'anime1: 换到 ' + streams.length + ' 条地址');
+    return streams;
+  }
+
   async function getStreams(tmdbId, mediaType, season, episode) {
     var started = Date.now();
     run.deadline = started + SOFT_DEADLINE_MS;
@@ -6520,11 +6705,12 @@
           finished[rule.name] = true;
           budget.succeeded++;
         } catch (error) {
-          // 一条规则卡住不该把整次调用拖死：还有预算就换下一条规则。
-          if (error.code === 'TIMEOUT' && Date.now() < run.deadline - 2000) {
+          // 一条规则失败/卡住不该把整次调用拖死：还有预算就换下一条规则。
+          if (error.code === 'TIMEOUT') {
+            if (Date.now() >= run.deadline - 2000) throw error;
             report(error);
           } else {
-            throw error;
+            report(error);
           }
         }
       };
@@ -6566,6 +6752,20 @@
         }
       }
 
+      // 内置源：anime1.me。跟规则并行存在，规则全挂时它就是唯一出路（反之亦然）。
+      if (streams.length < MAX_STREAMS && Date.now() < run.deadline) {
+        try {
+          var extra = await anime1Attempt(info, want);
+          for (var x = 0; x < extra.length && streams.length < MAX_STREAMS; x++) {
+            if (seen[extra[x].url]) continue;
+            seen[extra[x].url] = true;
+            streams.push(extra[x]);
+          }
+        } catch (anime1Error) {
+          if (anime1Error && anime1Error.code === 'CANCELLED') throw anime1Error;
+          emit('warn', 'anime1: ' + (anime1Error && anime1Error.code ? anime1Error.code + ' ' : '') + (anime1Error && anime1Error.message ? anime1Error.message : String(anime1Error)));
+        }
+      }
       emit('log', '返回 ' + streams.length + ' 条线路，试了 ' + budget.tried + ' 次规则，用时 ' + (Date.now() - started) + ' ms');
       return streams;
     } catch (error) {

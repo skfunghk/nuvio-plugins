@@ -88,6 +88,21 @@ const seqRoutes = (url) => {
   return { status: 404, text: 'not found' };
 };
 
+// 场景 D（内置 anime1 源）：KazumiRules 全挂时，anime1 的索引 + apireq 链路仍要出线路。
+const A1_LIB = JSON.stringify([[1989, '进击的巨人', '連載中(25)', '2013', '春', '']]);
+const A1_CAT = '<html><body>' + [1, 2, 3].map((n) => `<article><a href="/1000${n}/"></a><h2 class="entry-title">进击的巨人 [0${n}]</h2></article>`).join('') + '</body></html>';
+const A1_POST = '<html><body><video data-apireq="%7B%22c%22%3A%221989%22%2C%22e%22%3A%22x%22%7D"></video></body></html>';
+const routesAnime1 = (url) => {
+  const u = String(url);
+  if (u.includes('animelist.json')) return { text: A1_LIB, type: 'application/json' };
+  if (u.includes('anime1.me/?cat=')) return { text: A1_CAT, type: 'text/html' };
+  if (/anime1\.me\/1000\d/.test(u)) return { text: A1_POST, type: 'text/html' };
+  if (u.includes('v.anime1.me/api')) return { json: { s: [{ src: '//hinata.v.anime1.me/1989/03.mp4', type: 'video/mp4' }] }, cookie: 'laravel_session=FAKE; Path=/', type: 'application/json' };
+  if (u.includes('hinata.v.anime1.me')) return { text: 'xxxxftypisom', type: 'video/mp4' };
+  if (u.includes('kitsu.io/api/edge/anime/')) return { json: { data: { id: '7442', attributes: { canonicalTitle: '进击的巨人', titles: { ja_jp: '進撃の巨人' }, startDate: '2013-04-07' } } }, type: 'application/json' };
+  return { status: 404, text: 'nope' };      // 规则站、ani.zip、Bangumi、规则仓库一律不可用
+};
+
 const routes = (url) => {
   const u = String(url);
   if (u.startsWith('https://api.themoviedb.org/3/tv/14285')) return { json: TMDB_TV };
@@ -103,7 +118,14 @@ const response = (spec) => ({
   status: spec.status || 200,
   statusText: '',
   url: '',
-  headers: { get: (name) => (String(name).toLowerCase() === 'content-type' ? (spec.type || null) : null) },
+  headers: {
+    get: (name) => {
+      const key = String(name).toLowerCase();
+      if (key === 'content-type') return spec.type || null;
+      if (key === 'set-cookie') return spec.cookie || null;
+      return null;
+    },
+  },
   text: async () => (spec.json ? JSON.stringify(spec.json) : (spec.text || '')),
   json: async () => spec.json || null,
   arrayBuffer: async () => new ArrayBuffer(0),
@@ -206,6 +228,26 @@ for (const [name, ok] of seqAsserts) {
   console.log((ok ? '✔ ' : '✖ ') + name);
   if (!ok) failed++;
 }
+
+// —— 场景 D：内置 anime1 源
+sandbox.__routes = routesAnime1;
+calls.length = 0;
+logs.length = 0;
+const a1Streams = await getStreams('kitsu:7442:3', 'tv', null, 3).catch((error) => ({ error }));
+const a1Log = logs.join('\n');
+const a1Asserts = [
+  ['读的是 anime1 索引', calls.some((u) => u.includes('animelist.json'))],
+  ['区间命中索引行', /anime1: 命中「进击的巨人」\(連載中\(25\)\)/.test(a1Log)],
+  ['换址用了 data-apireq', calls.some((u) => u.includes('v.anime1.me/api'))],
+  ['出 mp4 线路', Array.isArray(a1Streams) && a1Streams[0] && /hinata\.v\.anime1\.me\/1989\/03\.mp4$/.test(String(a1Streams[0].url))],
+  ['线路带上站点 Cookie', Array.isArray(a1Streams) && a1Streams[0] && a1Streams[0].headers && /laravel_session=FAKE/.test(String(a1Streams[0].headers.Cookie || ''))],
+  ['规则全挂不影响出线路', Array.isArray(a1Streams) && a1Streams.length > 0],
+];
+for (const [name, ok] of a1Asserts) {
+  console.log((ok ? '✔ ' : '✖ ') + name);
+  if (!ok) failed++;
+}
+if (!Array.isArray(a1Streams) && process.env.DUMP) console.log(a1Log);
 
 console.log('─'.repeat(60));
 console.log(failed ? `${failed} 项未通过` : '全部通过');

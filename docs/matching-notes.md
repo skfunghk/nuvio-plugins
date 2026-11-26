@@ -322,3 +322,28 @@ anime1.me animelist.json / 首页 → 521（Cloudflare 源站宕机）
 kitsu:7442:1     → 1 条 mp4（S1E1）     12.7 s
 anilist:206401:1 → 2 条 HLS（繁體 + 原版）
 ```
+
+## 16. 0.5.0：把 anime1.me 做成内置源
+
+`docs/rule-audit-2026-11-27.md` 的结论是 KazumiRules 18 条里只有 giriGiriLove 能用，所以 0.5.0 把
+**anime1.me 直接内置进插件**，不再依赖规则库：
+
+```
+索引  GET https://anime1.me/animelist.json        → [[catId, 名称, "連載中(25)" | "29-38" | "劇場", 年, 季, …]]
+集数  GET https://anime1.me/?cat=<catId>&paged=N  → <article> 里是各集文章 /{postId}
+换址  GET https://anime1.me/<postId>              → <video data-apireq="…">
+      POST https://v.anime1.me/api  d=…           → { s: [ { src: "//hinata.v.anime1.me/1989/03.mp4" } ] } + Set-Cookie
+```
+
+跟规则并列跑，互不依赖：
+
+- 规则拿到 2 条线路时也会继续问 anime1（受 `MAX_STREAMS = 8` 限制）；
+- 规则全挂（例如 giriGiri 504）时 anime1 仍然出线路，反之亦然；
+- 行选取用站点的 `status` 区间：`span.start > 1`（如 `29-38`）按**绝对集号**，否则按季内集号；
+- 片名匹配用「精确 100 / 包含 84·66 / CJK 重合 ≥0.85 且 ≥3 字 72」，和 anime1 那份 addon 一致；
+- 换址响应里的 `Set-Cookie` 会带进 `stream.headers.Cookie`（MP4 主机要用），Referer/Origin 也一起给。
+
+离线断言（`node test/kazumi-matching.mjs` 场景 D，6 项）：读索引 → 区间命中 → apireq 换址 → 出 mp4 → Cookie 带上 → 规则全挂仍出线路。
+
+真网络：giriGiri 正常（`kitsu:7442:3` → `AttackonTitanS1/03.mp4`），anime1 当天 `521`（源站宕机），
+插件按设计只记一条 warn，不影响另一条线路。
