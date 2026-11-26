@@ -58,7 +58,7 @@
 (function () {
   'use strict';
 
-  var VERSION = '0.4.1';
+  var VERSION = '0.4.2';
   var TAG = '[kazumi]';
 
   var SOFT_DEADLINE_MS = 34000;
@@ -325,6 +325,8 @@
     var result;
     for (var attempt = 0; ; attempt++) {
       result = await rawFetch(url, { method: 'GET', headers: headers });
+      // 5xx 是站点自己的问题，重试只会把预算烧光（giriGiriLove 的 API 挂掉时能烧掉 40 秒），
+      // 直接交给调用方去试下一条规则。只有连接失败（status 0）才重试。
       if (result.status !== 0 || attempt >= retries || Date.now() > run.retryUntil) return result;
       await sleep(250 * (attempt + 1));
     }
@@ -6182,6 +6184,19 @@
       for (var i = 0; i < roads.length; i++) count = Math.max(count, usableLength(roads[i]));
       return count;
     }
+    // 只有一条线路、一个地址、标签里没有集号 —— 那是剧场版/合集/正片，不是某一集。
+    // 剧集请求里命中它会把「第 1 集」换成一部剧场版（akianime 的「后篇自由之翼」就是这样来的）。
+    function singleFeature(roads) {
+      var total = 0, numbered = 0;
+      for (var i = 0; i < roads.length; i++) {
+        for (var j = 0; j < roads[i].names.length; j++) {
+          total++;
+          if (labelNumber(roads[i].names[j]) !== null) numbered++;
+        }
+      }
+      return total > 0 && numbered === 0 && total <= 2;
+    }
+
     function take(entry, position) {
       var roads = cache[entry.item.src];
       var road = chooseRoad(roads, position);
@@ -6222,13 +6237,35 @@
       var ordered = entries.slice().sort(function (a, b) {
         return seasonRank(a) - seasonRank(b) || b.score - a.score || a.order - b.order;
       });
+      // ani.zip 已经说明是第几季时，只在该季的条目里累加；否则「只有第二季的站」会把第 1 集
+      // 当成第二季第 1 集（akianime 的进击的巨人就是这样）。该季没有条目时才退回全表。
+      if (want.season != null) {
+        var nameOf = function (entry) { return String(entry.item.name || ''); };
+        var sameSeason = ordered.filter(function (entry) {
+          if (entry.marker != null) return entry.marker === want.season;
+          // 没有季号的条目只有当「第一季」用；「最终季 / 完结篇」不算第一季
+          return want.season === 1 && !FINAL_SEASON.test(nameOf(entry));
+        });
+        if (sameSeason.length) {
+          ordered = sameSeason;
+        } else {
+          // 该季没有条目：整部条目只对第 1 季有意义，其余情况不猜（站点缺这一季）
+          var wholeRow = ordered.filter(function (entry) {
+            return entry.marker == null && !FINAL_SEASON.test(nameOf(entry));
+          });
+          ordered = want.season === 1 && wholeRow.length ? wholeRow : [];
+          if (!ordered.length) {
+            throw fail('NOT_FOUND', rule.name + ': 站点的条目里没有第 ' + want.season + ' 季');
+          }
+        }
+      }
       var remaining = want.episode;
       var tried = 0;
       for (var f = 0; f < ordered.length && tried < 5 && Date.now() < run.deadline; f++) {
         var step = ordered[f];
         var flatRoads = await roadsOf(step);
         tried++;
-        if (!flatRoads.length) continue;
+        if (!flatRoads.length || singleFeature(flatRoads)) continue;
         var count = longest(flatRoads);
         if (!count) continue;
         // 站点有的条目自带连续编号（例如 29-38 接着上季），这时绝对集号就是条目标签本身，
@@ -6264,7 +6301,7 @@
         var step = chain[c];
         if (c > 0 && step.marker !== null && step.marker > want.season && !(season && season.count > before)) break;
         var roads = await roadsOf(step);
-        if (!roads.length) { if (c === 0) break; continue; }
+        if (!roads.length || singleFeature(roads)) { if (c === 0) break; continue; }
         var position = want.episode - before;
         if (position >= 1) {
           var hit = take(step, position);
@@ -6278,7 +6315,7 @@
     if (whole.length) {
       var offset = want.season ? seasonOffset(info, want.season) : 0;
       roads = await roadsOf(whole[0]);
-      if (roads.length) {
+      if (roads.length && !singleFeature(roads)) {
         var found = take(whole[0], want.episode + offset);
         if (found) { found.whole = true; return found; }
       }
@@ -6286,7 +6323,7 @@
     // 3. an entry whose suffix names no season known to TMDB: the wanted number, as it is
     for (var o = 0; o < others.length && o < 2; o++) {
       roads = await roadsOf(others[o]);
-      if (!roads.length) continue;
+      if (!roads.length || singleFeature(roads)) continue;
       var other = take(others[o], want.episode);
       if (other) return other;
     }
@@ -6483,8 +6520,12 @@
           finished[rule.name] = true;
           budget.succeeded++;
         } catch (error) {
-          if (error.code === 'TIMEOUT') throw error;
-          report(error);
+          // 一条规则卡住不该把整次调用拖死：还有预算就换下一条规则。
+          if (error.code === 'TIMEOUT' && Date.now() < run.deadline - 2000) {
+            report(error);
+          } else {
+            throw error;
+          }
         }
       };
       var exhausted = function (limit) {
