@@ -1,0 +1,77 @@
+# 根 manifest（含 Kazumi）
+
+呢份系 `skfunghk/nuvio-plugins` 仓库根目录 `manifest.json` 合并 Kazumi 之后嘅内容。
+Kanju 嗰个入口原封不动，只系加咗两个 Kazumi 入口（`filename` 用 `kazumi/kazumi.js`）。
+随 Kazumi 一齐 push，repo 根目录一次过装到 Kanju + Kazumi：
+
+```
+https://raw.githubusercontent.com/skfunghk/nuvio-plugins/main/manifest.json
+```
+
+```json
+{
+  "name": "skfunghk 的 Nuvio 插件集",
+  "version": "1",
+  "description": "看剧AI（kanju44.com / kanju.ai）播放线路 + Kazumi 规则动画线路。只提供线路，不含片库或搜索；仅限可侧载（sideloaded）版 Nuvio。",
+  "author": "skfunghk",
+  "scrapers": [
+    {
+      "id": "kanju",
+      "name": "看剧AI",
+      "description": "看剧AI 第三方线路：按 TMDB 片名匹配剧集，返回站点不消耗游客额度的 m3u8/mp4 直链。kanju44.com 不通时自动改用 kanju.ai。",
+      "version": "0.1.0",
+      "filename": "kanju/kanju.js",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "zh"
+      ],
+      "formats": [
+        "m3u8",
+        "mp4"
+      ]
+    },
+    {
+      "id": "kazumi",
+      "name": "Kazumi 规则",
+      "description": "按 TMDB 片名在 Kazumi 规则站点搜索动画剧集，返回 m3u8/mp4 直链。只用已实测可用的规则（giriGiriLove）；规则文件运行时从 KazumiRules 仓库读取，仓库不通时用内置快照。",
+      "version": "0.1.0",
+      "filename": "kazumi/kazumi.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "zh"
+      ],
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "hasSettings": false
+    },
+    {
+      "id": "kazumi-experimental",
+      "name": "Kazumi 规则（实验）",
+      "description": "同上，另加实验规则（akianime、MXdm、ezdmw、AGE）：能搜到条目、读到剧集和播放页里的地址，但 2026-11-26 测试时这些地址返回 403/404，未能确认可播放。会和「Kazumi 规则」重复，二选一即可。",
+      "version": "0.1.0",
+      "filename": "kazumi/kazumi.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": false,
+      "contentLanguage": [
+        "zh"
+      ],
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "hasSettings": false
+    }
+  ]
+}
+```
