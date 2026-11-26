@@ -43,7 +43,7 @@ TMDB 中文名 → POST api.bgm.tv/v0/search/subjects（type=2 动画）→ 按�
 
 详见 [`docs/matching-notes.md`](../docs/matching-notes.md)。
 
-## 动画 ID 点样入嚟（0.3.0：ani.zip 映射）
+## 动画 ID 点样入嚟（0.4.0：ani.zip 映射 + Cookie 转发）
 
 Nuvio 对动画条目唔系用片名配资源，而系：
 

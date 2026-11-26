@@ -58,7 +58,7 @@
 (function () {
   'use strict';
 
-  var VERSION = '0.3.0';
+  var VERSION = '0.4.0';
   var TAG = '[kazumi]';
 
   var SOFT_DEADLINE_MS = 34000;
@@ -273,7 +273,7 @@
     try {
       var response = await fetch(url, options);
       var body = await response.text();
-      return {
+      var result = {
         ok: !!response.ok,
         status: Number(response.status) || 0,
         statusText: String(response.statusText || ''),
@@ -281,9 +281,35 @@
         headers: response.headers,
         body: typeof body === 'string' ? body : '',
       };
+      absorbCookies(result);
+      return result;
     } catch (e) {
       return { ok: false, status: 0, statusText: e && e.message ? String(e.message) : String(e), url: url, headers: null, body: '' };
     }
+  }
+
+  // 站点在搜索/剧集接口上发的 Cookie，媒体主机有时要用（Nuvio 的播放器会把 headers 原样带上）。
+  // 只收 name=value，不理会属性；同名取最后一次。
+  function absorbCookies(result) {
+    if (!result || !result.headers || typeof result.headers.get !== 'function') return;
+    var raw = '';
+    try { raw = result.headers.get('set-cookie') || ''; } catch (e) { return; }
+    if (!raw) return;
+    var parts = String(raw).split(/,\s*(?=[A-Za-z0-9_\-]+=)/);
+    for (var i = 0; i < parts.length; i++) {
+      var pair = String(parts[i]).split(';')[0].trim();
+      if (!pair || pair.indexOf('=') < 1) continue;
+      var name = pair.split('=')[0];
+      if (!name) continue;
+      run.jar[name] = pair;
+    }
+  }
+
+  function cookieHeader() {
+    var names = Object.keys(run.jar);
+    var pairs = [];
+    for (var i = 0; i < names.length; i++) pairs.push(run.jar[names[i]]);
+    return pairs.join('; ');
   }
 
   // Nuvio cuts a fetch body at 1 MiB. NuvioMobile appends a marker; NuvioTV truncates silently,
@@ -5524,6 +5550,32 @@
   //   group 'whole'   the bare title: every season in one entry, positions are absolute
   // A suffix that names no season known to TMDB is never used: on the sites it belongs to a
   // compilation film, a recap or another season, and a wrong episode is worse than none.
+  // 站点常把片名换个写法（繁简、民间译名、日文原名），前缀匹配就认不出。
+  // 退一步用 CJK 字重合度：至少 3 个汉字且重合 ≥ 0.85 才算同一个条目，避免「进击的巨人」吃到「进击的巨人中学」。
+  function cjkOverlap(left, right) {
+    var a = String(left || '').match(/[\u3400-\u9fff]/g) || [];
+    var b = String(right || '').match(/[\u3400-\u9fff]/g) || [];
+    if (!a.length || !b.length) return 0;
+    var counts = {}, used = {}, inter = 0;
+    for (var i = 0; i < b.length; i++) counts[b[i]] = (counts[b[i]] || 0) + 1;
+    for (var j = 0; j < a.length; j++) {
+      if ((counts[a[j]] || 0) > (used[a[j]] || 0)) { used[a[j]] = (used[a[j]] || 0) + 1; inter++; }
+    }
+    return inter / Math.min(a.length, b.length);
+  }
+
+  function overlapTitle(name, info) {
+    var value = toSimplified(name);
+    var cjk = (value.match(/[\u3400-\u9fff]/g) || []).length;
+    if (cjk < 3) return null;
+    var best = null, bestRatio = 0;
+    for (var i = 0; i < info.titles.length; i++) {
+      var ratio = cjkOverlap(value, toSimplified(info.titles[i].text));
+      if (ratio >= 0.85 && ratio > bestRatio) { bestRatio = ratio; best = info.titles[i]; }
+    }
+    return best ? best : null;
+  }
+
   function describeEntry(item, info, want) {
     var key = compact(fold(item.name));
     var best = null;
@@ -5534,7 +5586,29 @@
         if (!best || base > best.base || (base === best.base && known.length > best.known.length)) best = { base: base, known: known };
       }
     }
-    if (!best || best.known.length < 2) return null;
+    if (!best || best.known.length < 2) {
+      var loose = overlapTitle(item.name, info);
+      if (!loose) return null;
+      // 换成写法不同但字面高度重合的片名：当作同一个条目，后面的季号仍从标题里读。
+      best = { base: 60, known: compact(baseTitle(loose.text)) };
+      if (!best.known || best.known.length < 2) return null;
+      var looseEntry = {
+        item: item,
+        key: key,
+        rest: '',
+        marker: seasonFromTitle(key),
+        part: partOf(key),
+        tagged: false,
+        kind: null,
+        score: 60,
+        group: '',
+        chain: 0,
+      };
+      if (want.absolute) return describeAbsolute(looseEntry);
+      looseEntry.group = 'season';
+      looseEntry.chain = 0;
+      return looseEntry;
+    }
     var rest = key.slice(best.known.length);
     var marker = rest ? seasonFromTitle(rest) : null;
     if (marker === null && rest && TRAILING_NUMBER.test(rest)) marker = Number(rest);
@@ -6148,6 +6222,17 @@
         if (!flatRoads.length) continue;
         var count = longest(flatRoads);
         if (!count) continue;
+        // 站点有的条目自带连续编号（例如 29-38 接着上季），这时绝对集号就是条目标签本身，
+        // 直接按标签取；只有从 1 开始编号的条目才用累加。
+        var numbers = numberedRoad(flatRoads[0]);
+        if (numbers && numbers.length && numbers[0] > 1 && numbers.indexOf(want.episode) >= 0) {
+          var byLabel = take(step, want.episode);
+          if (byLabel) {
+            byLabel.whole = step.group === 'whole';
+            emit('log', rule.name + ': 「' + step.item.name + '」按条目自带编号命中第 ' + want.episode + ' 项');
+            return byLabel;
+          }
+        }
         if (remaining <= count) {
           var flatFound = take(step, remaining);
           if (flatFound) {
@@ -6221,6 +6306,15 @@
     var label = String(hit.pick.label || '').trim() || '第' + hit.position + '集';
     var entryTitle = String(hit.entry.item.name || '');
     var stream = { name: rule.name + ' · ' + label, title: entryTitle + ' · ' + label, url: media.url };
+    // 播放器要的请求头：来源站做 Referer（防盗链），站点发的 Cookie 一并带上。
+    var headers = {};
+    var agent = String(rule.userAgent || '').trim() || USER_AGENT;
+    if (agent) headers['User-Agent'] = agent;
+    var base = String(rule.baseURL || '').trim();
+    if (base) headers.Referer = base;
+    var cookie = cookieHeader();
+    if (cookie) headers.Cookie = cookie;
+    if (Object.keys(headers).length) stream.headers = headers;
     var quality = qualityOf(label) || qualityOf(hit.road.name);
     if (quality) stream.quality = quality;
     var language = languageOf(entryTitle);
@@ -6274,7 +6368,7 @@
   // 30 s (NuvioTV), so nothing new starts after SOFT_DEADLINE_MS; a dropped connection is not
   // retried after RETRY_BUDGET_MS; an address is confirmed, and more roads are read, only while
   // VERIFY_UNTIL_MS lasts; the rule repository is only asked while REMOTE_UNTIL_MS lasts.
-  var run = { deadline: 0, retryUntil: 0, verifyUntil: 0, remoteUntil: 0, experimental: false };
+  var run = { deadline: 0, retryUntil: 0, verifyUntil: 0, remoteUntil: 0, experimental: false, jar: {} };
 
   function parseArgs(tmdbId, mediaType, season, episode) {
     var id = String(tmdbId === undefined || tmdbId === null ? '' : tmdbId).trim();

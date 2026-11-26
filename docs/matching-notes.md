@@ -196,3 +196,41 @@ kazumi 0.3.0 采用同一套：
 - Bangumi 桥是**按名字搜条目**，要判断相似度、年份，同名不同片会错；ani.zip 是**按 id 换 id**，没有歧义。
 - Bangumi 只给中文名，ani.zip 一次给 TMDB id + 繁体/简体/日文/英文 + 集数坐标。
 - 但两者不冲突：ani.zip 拿不到（小站/新番）时，Bangumi 桥仍然补中文名，作为第二层。
+
+## 12. 与 `Stremio/addons/anime1` 的实现逐项对比（0.4.0）
+
+参考文件：`~/Developer/projects/Stremio/addons/anime1/plugin/providers/anime1.js`（715 行，v1.1.0）。
+
+它比 kazumi 强的地方是**匹配靠本地方案索引，不靠站点搜索**：
+
+| 维度 | anime1 插件 | kazumi 0.3.0（改前） | kazumi 0.4.0（改后） |
+| --- | --- | --- | --- |
+| id → 片名 | ani.zip + TMDB（有内置备用 key） | ani.zip + tracker API + Bangumi | 同 0.3.0 |
+| 检索对象 | 本地索引 `animelist.json`（1966 行，缓存 30 分钟） | 每个规则站点的搜索接口 | 同 0.3.0（站点搜索是外部约束，改不了） |
+| 集数区间 | `spanOf(status)` 解析「連載中(08)」「29-38」「劇場」 | 无 | 无（规则站点的 `vod_remarks` 不带区间） |
+| 编号模式 | `span.start > 1 ? abs : rel` —— 条目接着上季编号时用绝对集号 | 一律按位置累加 | **按条目自带编号直取**（`numberedRoad` 第一项 > 1 且含目标集号时） |
+| 季名对齐 | 用 TMDB 的 season `name` 跟条目名比（「The Final Season」↔「最终季」） | 只有季号标记正则 | 同左（未采用季名比对） |
+| 片名相似度 | 精确 100 / 包含 84·66 / CJK 重合 ≥0.85 且 ≥3 字 → 72，拉丁词命中 | 前缀匹配 + 繁→简归一 | 前缀匹配 + 繁→简归一 + **CJK 重合兜底（≥0.85、≥3 字，仅在前缀失败时）** |
+| 媒体请求头 | 带 `Referer` / `Origin` / `UA`，并把 watch API 的 `Set-Cookie` 转给 MP4 主机 | 不带任何 headers | **带 `Referer`（规则 baseURL）/ `UA` / 站点 Cookie** |
+| 播放地址校验 | 不校验 | 发 Range 探测（2 字节前缀） | 同左 |
+
+已经搬过来的三条：
+
+1. **Cookie 转发 + Referer/UA**（0.4.0）：`rawFetch` 统一吸收 `Set-Cookie`，`buildStream` 把它们放进
+   `stream.headers`。实测 giriGiri 的媒体主机不需要，但 MXdm 之类的 CDN 需要，之前是要靠宿主猜。
+2. **条目自带连续编号**：站点把第二季编号接着上季（29-38）时，绝对集号直接对标签，不再按位置累加。
+3. **CJK 重合度兜底**：前缀匹配失败时，用「至少 3 个汉字且重合 ≥0.85」再认一次，避免换写法就搜不到。
+
+没有搬的：
+
+- **本地索引**：kazumi 面对的是几十条规则的几十个站点，没有统一的索引可抓；这一点 anime1 插件天然占优（
+  它只服务一个站，且那个站提供了 `animelist.json`）。
+- **`spanOf` 集数区间**：规则站点的列表接口只给「更新至 09 集」，不给区间，拿不到就只能按条目顺序推。
+
+离线断言（`node test/kazumi-matching.mjs`，三组场景全过）：
+
+| 场景 | 断言 |
+| --- | --- |
+| A：TMDB 只有简体名，站点只有繁体名 | Bangumi 补名 → 繁体别名搜索 → 出线路 |
+| B：`anilist:206401:1` | ani.zip 查询 → 季集坐标 → 繁体片名搜索 → 出线路 |
+| C：`kitsu:9999:34`，站点条目编号 29-38 | 按条目自带编号命中第 34 项 → 取到 34.mp4 → 线路带 Referer |

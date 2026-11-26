@@ -70,6 +70,24 @@ const routesId = (url) => {
   return { status: 404, text: 'not found' };
 };
 
+// 场景 C（条目自带连续编号）：站点把「第二季」的集数接着上季编号（29-38），
+// 绝对第 34 集应当按标签直接命中，而不是按位置累加。
+const seqRoutes = (url) => {
+  const u = String(url);
+  if (u.startsWith('https://kitsu.io/api/edge/anime/')) {
+    return { json: { data: { id: '9999', attributes: { canonicalTitle: 'Frieren', titles: { en: 'Frieren', ja_jp: '葬送のフリーレン' }, startDate: '2023-09-29' } } } };
+  }
+  if (u.startsWith('https://api.ani.zip/mappings')) return { status: 404, text: '' };   // 不给季集坐标，逼进 flat 模式
+  if (u.startsWith('https://api.bgm.tv')) return { status: 404, text: '' };
+  if (u.includes('get_list')) return { json: { info: { rows: [{ vod_id: '555', vod_name: '葬送のフリーレン 第二季' }] } } };
+  if (u.startsWith('https://ana.example/')) return { status: 200, text: 'ftypisom', type: 'video/mp4' };
+  if (u.includes('get_detail')) {
+    const eps = Array.from({ length: 10 }, (_, i) => `${29 + i}$https://ana.example/frieren/${29 + i}.mp4`).join('#');
+    return { json: { info: { vod_id: '555', vod_name: '葬送のフリーレン 第二季', vod_play_from: 'chs', vod_play_note: '', vod_play_server: '', vod_play_url: eps } } };
+  }
+  return { status: 404, text: 'not found' };
+};
+
 const routes = (url) => {
   const u = String(url);
   if (u.startsWith('https://api.themoviedb.org/3/tv/14285')) return { json: TMDB_TV };
@@ -171,6 +189,23 @@ for (const [name, ok] of idAsserts) {
 }
 if (Array.isArray(idStreams) && idStreams[0]) console.log('ℹ 线路：' + idStreams[0].url);
 else if (process.env.DUMP) console.log(idLog);
+
+// —— 场景 C：条目自带连续编号 29-38，绝对第 34 集
+sandbox.__routes = seqRoutes;
+calls.length = 0;
+logs.length = 0;
+const seqStreams = await getStreams('kitsu:9999:34', 'tv', null, 34).catch((error) => ({ error }));
+const seqLog = logs.join('\n');
+const seqAsserts = [
+  ['按条目自带编号命中', /按条目自带编号命中第 34 项/.test(seqLog)],
+  ['取到第 34 集的地址', Array.isArray(seqStreams) && seqStreams[0] && /\/frieren\/34\.mp4$/.test(String(seqStreams[0].url))],
+  ['线路带 Referer / UA 头', Array.isArray(seqStreams) && seqStreams[0] && seqStreams[0].headers && !!seqStreams[0].headers.Referer],
+];
+if (process.env.DUMP) { console.log('--- C 请求'); console.log(calls.join('\n')); console.log('--- C 日志'); console.log(seqLog); }
+for (const [name, ok] of seqAsserts) {
+  console.log((ok ? '✔ ' : '✖ ') + name);
+  if (!ok) failed++;
+}
 
 console.log('─'.repeat(60));
 console.log(failed ? `${failed} 项未通过` : '全部通过');
