@@ -1,0 +1,146 @@
+[
+ {
+  "name": "7sefun",
+  "search": "xpath 200",
+  "chapters": "xpath 200",
+  "media": "",
+  "note": "命中 21",
+  "url": "https://www.7sefun.top/vodtype/1.html"
+ },
+ {
+  "name": "AGE",
+  "search": "xpath 0",
+  "chapters": "",
+  "media": "",
+  "note": "搜索 0",
+  "url": ""
+ },
+ {
+  "name": "DM84",
+  "search": "xpath 200",
+  "chapters": "xpath 200",
+  "media": "无 (剧集页 200)",
+  "note": "命中 36 | 集 30",
+  "url": "https://dmbus.cc/v/1170.html"
+ },
+ {
+  "name": "LMM",
+  "search": "api 200",
+  "chapters": "xpath 0",
+  "media": "",
+  "note": "命中 14",
+  "url": "https://www.lmm22.com/7283"
+ },
+ {
+  "name": "MXdm",
+  "search": "xpath 200",
+  "chapters": "xpath 200",
+  "media": "无 (剧集页 200)",
+  "note": "命中 36 | 集 4",
+  "url": "https://www.dcc3.com/detail/6760/"
+ },
+ {
+  "name": "TvTFun",
+  "search": "api 200",
+  "chapters": "xpath 0",
+  "media": "",
+  "note": "命中 11",
+  "url": "https://www.tvtfun.net/55770"
+ },
+ {
+  "name": "aafun",
+  "search": "xpath 200",
+  "chapters": "xpath 200",
+  "media": "无 (剧集页 200)",
+  "note": "命中 49 | 集 8",
+  "url": "https://www.moonci.com/type/20.html"
+ },
+ {
+  "name": "akianime",
+  "search": "xpath 200",
+  "chapters": "",
+  "media": "",
+  "note": "搜索页无详情链接(JS?)",
+  "url": ""
+ },
+ {
+  "name": "baimao",
+  "search": "xpath 200",
+  "chapters": "xpath 200",
+  "media": "无 (剧集页 200)",
+  "note": "命中 48 | 集 10",
+  "url": "https://www.baimaodm.com/show/80993.html"
+ },
+ {
+  "name": "dalvdm",
+  "search": "api 0",
+  "chapters": "",
+  "media": "",
+  "note": "搜索 0",
+  "url": ""
+ },
+ {
+  "name": "ezdmw",
+  "search": "xpath 200",
+  "chapters": "xpath 200",
+  "media": "",
+  "note": "命中 29",
+  "url": "https://m.ezdmw.org/Index/up_details/983.html"
+ },
+ {
+  "name": "giriGiriLove",
+  "search": "api 200",
+  "chapters": "api 200",
+  "media": "https://akua.girigirilove.com/zijian/anime/2024/09/0911/ShingekinoKyojinTheFinalSeasonKank [206]",
+  "note": "命中 10 | 集 1",
+  "url": "https://ani.girigirilove.com/25684"
+ },
+ {
+  "name": "mgnacg",
+  "search": "api 200",
+  "chapters": "xpath 200",
+  "media": "无 (剧集页 200)",
+  "note": "命中 12 | 集 12",
+  "url": "https://www.mgnacg.com/media/1087"
+ },
+ {
+  "name": "moonci",
+  "search": "api 200",
+  "chapters": "xpath 0",
+  "media": "",
+  "note": "命中 12",
+  "url": "https://www.moonci.com/1333"
+ },
+ {
+  "name": "mutefun",
+  "search": "xpath 0",
+  "chapters": "",
+  "media": "",
+  "note": "搜索 0",
+  "url": ""
+ },
+ {
+  "name": "sorani",
+  "search": "api 200",
+  "chapters": "api 200",
+  "media": "无 (剧集页 0)",
+  "note": "命中 19 | 集 1",
+  "url": "https://www.sorani.net/103"
+ },
+ {
+  "name": "xfdmneo",
+  "search": "xpath 0",
+  "chapters": "",
+  "media": "",
+  "note": "搜索 0",
+  "url": ""
+ },
+ {
+  "name": "xfdmnext",
+  "search": "api 0",
+  "chapters": "",
+  "media": "",
+  "note": "搜索 0",
+  "url": ""
+ }
+]
