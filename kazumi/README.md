@@ -24,6 +24,25 @@ https://raw.githubusercontent.com/skfunghk/nuvio-plugins/main/manifest.json
 | Kazumi 规则 | 开 | 只用 giriGiriLove | 2026-11-26 live：《进击的巨人》S1E1 / S3E1 / S5E12 全部出到可播 mp4（206） |
 | Kazumi 规则（实验） | 关 | 再加 akianime、MXdm、ezdmw、AGE | 同日 live：MXdm 出到可播 m3u8（200，`#EXTM3U`），但早前 probe 见过 403；akianime 播唔到（要执行页面脚本）；ezdmw、AGE 未确认 |
 
+## 中文名对齐（0.1.1）
+
+TMDB 的 `zh-CN` 名同中文站点写法经常唔同（繁简、官方译名 vs 民间译名），所以插件除咗 TMDB 嘅
+`translations` + `alternative_titles`，仲会经 **Bangumi** 补名：
+
+```
+TMDB 中文名 → POST api.bgm.tv/v0/search/subjects（type=2 动画）→ 按标题相似度 + 首播年挑条目
+            → GET api.bgm.tv/v0/subjects/{id} → name / name_cn / 别名
+            → 追加为候选名，再去站点搜
+```
+
+- Bangumi 只做「换名工具」，**Nuvio 读唔到 Bangumi ID**（宿主只传 TMDB，或转换失败时透传
+  kitsu/mal/anilist）。所以 Bangumi 条目 id 唔可以当入口用。
+- 补名失败（超时／403／解析唔到）只会写一行 warn，唔影响正常搜索；预算 6 秒。
+- 另加一层片名高频繁体字 → 简体字嘅归一，做兜底比较。
+- 自测：`node test/kazumi-matching.mjs`（离线，TMDB + Bangumi + 站点全部用 fetch 垫片）。
+
+详见 [`docs/matching-notes.md`](../docs/matching-notes.md)。
+
 ## 做到咩、做唔到咩
 
 - 收到 TMDB ID 之后，插件用中文／英文／日文片名（TMDB `zh-CN` + 翻译 + 别名，最多试 4 个名）去各规则站点搜，再攞集数、抽 m3u8／mp4 直链。动漫集数用绝对集号（NuvioTV 传 `season = null` + 绝对集数，插件识处理）。

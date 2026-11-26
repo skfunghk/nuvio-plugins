@@ -636,7 +636,8 @@ if (glue) {
 // ---------------------------------------------------------------------------------------------- 5. repository files
 
 test('repository: both manifests follow the shape the Nuvio hosts parse and point at the one plugin file', () => {
-  const check = (file, ids) => {
+  // kanju/manifest.json 是单插件仓库，校验得比根仓库细（版本、supportedTypes、mirror 语义）。
+  const checkSingle = (file, ids) => {
     const manifest = JSON.parse(readFileSync(join(ROOT, file), 'utf8'));
     for (const key of ['name', 'version']) assert.ok(typeof manifest[key] === 'string' && manifest[key], file + ': missing ' + key);
     assert.deepEqual(manifest.scrapers.map((scraper) => scraper.id), ids, file);
@@ -652,8 +653,27 @@ test('repository: both manifests follow the shape the Nuvio hosts parse and poin
       assert.equal(target, resolve(PLUGIN_PATH), scraper.filename + ' must be the one plugin file');
     }
   };
-  check('manifest.json', ['kanju']);
-  check('kanju/manifest.json', ['kanju-official']);
+
+  // 根仓库列多个 scraper（kanju + kazumi 两个入口），所以只校验两个宿主都会读的公共形状：
+  // id/name/version/filename 非空、supportedTypes 是非空数组、filename 能解析到真实存在的文件。
+  const checkRepository = (file, ids) => {
+    const manifest = JSON.parse(readFileSync(join(ROOT, file), 'utf8'));
+    for (const key of ['name', 'version']) assert.ok(typeof manifest[key] === 'string' && manifest[key], file + ': missing ' + key);
+    assert.deepEqual(manifest.scrapers.map((scraper) => scraper.id), ids, file);
+    for (const scraper of manifest.scrapers) {
+      for (const key of ['id', 'name', 'version', 'filename']) assert.ok(typeof scraper[key] === 'string' && scraper[key], file + ': scraper missing ' + key);
+      assert.ok(Array.isArray(scraper.supportedTypes) && scraper.supportedTypes.length > 0, file + ': ' + scraper.id + ' has no supportedTypes');
+      assert.equal(typeof scraper.enabled, 'boolean', file + ': ' + scraper.id + ' enabled must be a boolean');
+      for (const value of scraper.supportedTypes) assert.ok(['movie', 'tv', 'series'].includes(value), file + ': unsupported type ' + value);
+      assert.ok(['m3u8', 'mp4', 'mkv', 'webm'].includes(String((scraper.formats || [])[0])), file + ': ' + scraper.id + ' declares no format');
+      const target = resolve(dirname(join(ROOT, file)), scraper.filename);
+      assert.ok(existsSync(target), file + ': ' + scraper.filename + ' not found');
+    }
+  };
+
+  checkSingle('kanju/manifest.json', ['kanju-official']);
+  checkRepository('manifest.json', ['kanju', 'kazumi', 'kazumi-experimental']);
+  checkRepository('kazumi/manifest.json', ['kazumi', 'kazumi-experimental']);
   for (const file of ['README.md', 'docs/nuvio-plugin-contract.md']) assert.ok(existsSync(join(ROOT, file)), file + ' missing');
 });
 

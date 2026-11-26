@@ -58,11 +58,12 @@
 (function () {
   'use strict';
 
-  var VERSION = '0.1.0';
+  var VERSION = '0.1.1';
   var TAG = '[kazumi]';
 
   var SOFT_DEADLINE_MS = 34000;
   var RETRY_BUDGET_MS = 15000;
+  var BGM_BUDGET_MS = 6000;         // Bangumi 补名最多花这么久，超时就不补
   var VERIFY_UNTIL_MS = 20000;
   var REMOTE_UNTIL_MS = 22000;
   var MAX_SEARCH_TITLES = 4;
@@ -5037,7 +5038,167 @@
     return titles;
   }
 
+
+  // ------------------------------------------------- 中文名对齐（Bangumi 桥）
+  // Nuvio 只给 TMDB id。TMDB 的 zh-CN / zh-TW 名未必等于中文站的写法（繁体 vs 简体、
+  // 官方译名 vs 民间译名），所以再用 Bangumi 的 name_cn 与「别名」补一批候选。
+  // Bangumi 的条目 id 只在这里内部使用：Nuvio 不读 Bangumi id，宿主只会传 TMDB。
+  var BGM_API = 'https://api.bgm.tv';
+  var BGM_UA = 'skfunghk-nuvio-plugin/1.0 (https://github.com/skfunghk/nuvio-plugins)';
+
+  // 片名高频繁体 → 简体对照，用于「同片不同写法」的兜底比较；不是完整转换表。
+  var TRAD_SIMP = [
+    '\u64ca\u51fb','\u9032\u8fdb','\u9f8d\u9f99','\u528d\u5251','\u6230\u6218','\u5b78\u5b66','\u5712\u56ed',
+    '\u8c93\u732b','\u6200\u604b','\u611b\u7231','\u6642\u65f6','\u9593\u95f4','\u982d\u5934','\u5011\u4eec',
+    '\u8aac\u8bf4','\u5287\u5267','\u5834\u573a','\u9b25\u6597','\u9748\u7075','\u7378\u517d','\u5cf6\u5c9b',
+    '\u5922\u68a6','\u846f\u836f','\u9280\u94f6','\u8eca\u8f66','\u8ecd\u519b','\u968a\u961f','\u9580\u95e8',
+    '\u958b\u5f00','\u95dc\u5173','\u9ebc\u4e48','\u6a23\u6837','\u9019\u8fd9','\u4f86\u6765','\u5c0d\u5bf9',
+    '\u7121\u65e0','\u8207\u4e0e','\u70ba\u4e3a','\u696d\u4e1a','\u6a02\u4e50','\u5f9e\u4ece','\u6703\u4f1a',
+    '\u9084\u8fd8','\u8b93\u8ba9','\u8a18\u8bb0','\u61b6\u5fc6','\u98a8\u98ce','\u96f2\u4e91','\u96fb\u7535',
+    '\u8a71\u8bdd','\u8ab0\u8c01','\u6bba\u6740','\u5fa9\u590d','\u8208\u5174','\u50b3\u4f20','\u8b80\u8bfb',
+    '\u66f8\u4e66','\u5beb\u5199','\u9ad4\u4f53','\u9ede\u70b9','\u5169\u4e24','\u5e7e\u51e0','\u5167\u5185',
+    '\u5225\u522b','\u5247\u5219','\u525b\u521a','\u52d5\u52a8','\u52dd\u80dc','\u52e2\u52bf','\u5340\u533a',
+    '\u91ab\u533b','\u83ef\u534e','\u842c\u4e07','\u8449\u53f6','\u85dd\u827a','\u8655\u5904','\u865f\u53f7',
+    '\u87f2\u866b','\u8853\u672f','\u88dc\u8865','\u88dd\u88c5','\u898b\u89c1','\u89c0\u89c2','\u898f\u89c4',
+    '\u8996\u89c6','\u89ba\u89c9','\u8a02\u8ba2','\u8a08\u8ba1','\u8a0e\u8ba8','\u8a13\u8bad','\u8a2d\u8bbe',
+    '\u8a66\u8bd5','\u8a69\u8bd7','\u8a72\u8be5','\u8a8d\u8ba4','\u8a9e\u8bed','\u8aa0\u8bda','\u8aa4\u8bef',
+    '\u8acb\u8bf7','\u8ab8\u8bf8','\u8afe\u8bfa','\u8ab2\u8bfe','\u8abf\u8c03','\u8ac7\u8c08','\u8ad6\u8bba',
+    '\u8b1c\u8c0d','\u8b49\u8bc1','\u8b77\u62a4','\u8b8a\u53d8','\u8b9a\u8d5e','\u8c9d\u8d1d','\u8ca0\u8d1f',
+    '\u8ca1\u8d22','\u8ca8\u8d27','\u8ca9\u8d29','\u8cac\u8d23','\u8cb4\u8d35','\u8cb7\u4e70','\u8cbb\u8d39',
+    '\u8cc7\u8d44','\u8cfd\u8d5b','\u8d95\u8d76','\u8e5f\u8f68','\u8f49\u8f6c','\u8f2a\u8f6e','\u8fb2\u519c',
+    '\u9060\u8fdc','\u9078\u9009','\u907a\u9057','\u90f5\u90ae','\u9109\u4e61','\u91cb\u91ca','\u9c57\u9c9f',
+    '\u9577\u957f','\u9583\u95ea','\u9589\u95ed','\u9592\u95f2','\u95a8\u95fa','\u963b\u963b','\u9663\u9635',
+    '\u9670\u9634','\u9678\u9646','\u967d\u9633','\u96a8\u968f','\u96aa\u9669','\u96b1\u9690','\u96d9\u53cc',
+    '\u96dc\u6742','\u96e3\u96be','\u9727\u96fe','\u975c\u9759','\u97ff\u54cd','\u9801\u9875','\u9802\u9876',
+    '\u9805\u9879','\u9806\u987a','\u9808\u987b','\u9810\u9884','\u9813\u987f','\u9818\u9886','\u983b\u9891',
+    '\u9846\u9897','\u984c\u9898','\u9858\u613f','\u985e\u7c7b','\u986f\u663e','\u98db\u98de','\u990a\u517b',
+    '\u9918\u4f59','\u99ac\u9a6c','\u9a57\u9a8c','\u9aee\u53d1','\u9b5a\u9c7c','\u9ce5\u9e1f','\u9e97\u4e3d',
+    '\u9ec3\u9ec4','\u9ee8\u515a','\u9f4a\u9f50','\u9f52\u9f7f','\u9f61\u9f84','\u9f8e\u9f98','\u9eb5\u9762',
+    '\u9ede\u70b9','\u9854\u8138','\u9857\u98a0','\u9808\u987b','\u881f\u8721','\u5ee0\u5382','\u7522\u4ea7',
+    '\u8fa6\u529e','\u5354\u534f','\u53c3\u53c2','\u9ede\u70b9','\u9a5a\u60ca','\u9aee\u53d1'
+  ];
+  var T2S = null;
+  function toSimplified(text) {
+    if (!T2S) {
+      T2S = {};
+      for (var i = 0; i < TRAD_SIMP.length; i++) {
+        var pair = TRAD_SIMP[i];
+        if (pair.length === 2) T2S[pair.charAt(0)] = pair.charAt(1);
+      }
+    }
+    var value = String(text || '');
+    var out = '';
+    for (var j = 0; j < value.length; j++) {
+      var ch = value.charAt(j);
+      out += T2S[ch] || ch;
+    }
+    return out;
+  }
+
   function hasIdeographs(text) { return /[一-鿿]/.test(text); }
+
+  function similarity(a, b) {
+    var x = compact(a), y = compact(b);
+    if (!x || !y) return 0;
+    if (x === y) return 1;
+    if (x.indexOf(y) >= 0 || y.indexOf(x) >= 0) return 0.8;
+    return commonSubstring(x, y) / Math.max(1, Math.min(x.length, y.length));
+  }
+
+  async function bgmFetch(path, init) {
+    var headers = {
+      'User-Agent': BGM_UA,
+      Accept: 'application/json',
+    };
+    var options = { method: 'GET', headers: headers };
+    if (init && init.body) {
+      headers['Content-Type'] = 'application/json';
+      options.method = 'POST';
+      options.body = init.body;
+    }
+    var result = await rawFetch(BGM_API + path, options);
+    if (!result.ok) return null;
+    return parseJson(result.body);
+  }
+
+  /** Bangumi 的「别名」等字段既可能是字符串也可能是 {v} 数组。 */
+  function infoValues(infobox, key) {
+    var values = [];
+    if (!Array.isArray(infobox)) return values;
+    for (var i = 0; i < infobox.length; i++) {
+      var row = infobox[i];
+      if (!row || String(row.key || '').replace(/别名|別名/, '') !== '') { /* keep all keys, filter below */ }
+      if (!row || !/^(别名|別名|中文名|英文名|日文名)$/.test(String(row.key || ''))) continue;
+      var value = row.value;
+      if (typeof value === 'string') values.push(value);
+      else if (Array.isArray(value)) {
+        for (var j = 0; j < value.length; j++) {
+          var item = value[j];
+          if (typeof item === 'string') values.push(item);
+          else if (item && typeof item.v === 'string') values.push(item.v);
+        }
+      }
+    }
+    return values;
+  }
+
+  /** 用 TMDB 的中文名在 Bangumi 找同名条目，返回额外标题（name / name_cn / 别名）。 */
+  async function bangumiTitles(info) {
+    var keywords = [];
+    for (var i = 0; i < info.titles.length && keywords.length < 2; i++) {
+      var text = info.titles[i].text;
+      if (hasIdeographs(text)) keywords.push(text);
+    }
+    for (var k = 0; k < keywords.length; k++) {
+      if (Date.now() > run.deadline - BGM_BUDGET_MS) return [];
+      var payload = JSON.stringify({ keyword: keywords[k], filter: { type: [2] } });
+      var data = null;
+      try { data = await bgmFetch('/v0/search/subjects', { body: payload }); }
+      catch (e) { return []; }
+      var list = data && Array.isArray(data.data) ? data.data : [];
+      if (!list.length) continue;
+
+      var best = null, bestScore = 0;
+      for (var n = 0; n < list.length && n < 12; n++) {
+        var row = list[n];
+        if (!row || !row.id) continue;
+        var score = 0;
+        score = Math.max(score, similarity(row.name, keywords[k]), similarity(row.name_cn, keywords[k]));
+        for (var t = 0; t < info.titles.length; t++) {
+          score = Math.max(score, similarity(row.name, info.titles[t].text) * 0.95,
+            similarity(row.name_cn, info.titles[t].text) * 0.95);
+        }
+        var year = yearOf(row.date);
+        if (year && info.firstYear) {
+          var gap = Math.abs(year - info.firstYear);
+          if (gap === 0) score += 0.3; else if (gap <= 1) score += 0.1; else score -= 0.2;
+        }
+        if (score > bestScore) { bestScore = score; best = row; }
+      }
+      if (!best || bestScore < 0.55) continue;
+
+      var out = [];
+      if (best.name) out.push(best.name);
+      if (best.name_cn) out.push(best.name_cn);
+      var detail = null;
+      try { detail = await bgmFetch('/v0/subjects/' + best.id); } catch (e) { detail = null; }
+      if (detail) {
+        if (detail.name) out.push(detail.name);
+        if (detail.name_cn) out.push(detail.name_cn);
+        var aliases = infoValues(detail.infobox, '别名');
+        for (var a = 0; a < aliases.length; a++) out.push(aliases[a]);
+        emit('log', 'Bangumi ' + best.id + ' 命中：' + String(best.name_cn || best.name || ''));
+      }
+      var cleaned = [];
+      for (var q = 0; q < out.length; q++) {
+        var value = String(out[q] || '').trim();
+        if (value.length >= 2 && value.length <= 80) cleaned.push(value);
+      }
+      return cleaned;
+    }
+    return [];
+  }
+
 
   // kanju.js tries its titles in rank order. Every Kazumi rule searches a Chinese site, so the
   // same ranked list is walked with the Chinese names first; within one call a title that has
@@ -5065,7 +5226,7 @@
     var titles = tmdbTitles(data);
     if (!titles.length) throw fail('NOT_FOUND', 'TMDB 没有这部剧集的片名');
 
-    var info = { titles: titles, titlesByKey: {}, seasons: [], totalEpisodes: 0, hits: {} };
+    var info = { titles: titles, titlesByKey: {}, seasons: [], totalEpisodes: 0, hits: {}, firstYear: yearOf(data.first_air_date) };
     var seasons = Array.isArray(data.seasons) ? data.seasons : [];
     for (var i = 0; i < seasons.length; i++) {
       var number = Number(seasons[i].season_number);
@@ -5077,11 +5238,40 @@
     return info;
   }
 
+  // TMDB 名不够用时，用 Bangumi 补中文候选；失败一律静默，主流程照常。
+  async function augmentTitles(info) {
+    if (!Array.isArray(info.titles) || !info.titles.length) return;
+    var extra = [];
+    try {
+      extra = await bangumiTitles(info);
+    } catch (error) {
+      emit('warn', 'Bangumi 补名失败: ' + (error && error.message ? error.message : String(error)));
+      return;
+    }
+    if (!extra.length) return;
+    var seen = {};
+    for (var i = 0; i < info.titles.length; i++) seen[info.titles[i].text] = true;
+    var added = 0;
+    for (var j = 0; j < extra.length; j++) {
+      if (seen[extra[j]]) continue;
+      seen[extra[j]] = true;
+      info.titles.push({ text: extra[j], rank: 2, index: info.titles.length });
+      added++;
+    }
+    if (added) emit('log', 'Bangumi 补充 ' + added + ' 个中文候选名');
+  }
+
   function indexTitles(info) {
     for (var t = 0; t < info.titles.length; t++) {
-      var key = compact(baseTitle(info.titles[t].text));
+      var text = info.titles[t].text;
       var score = info.titles[t].rank === 1 ? 100 : (info.titles[t].rank === 2 ? 90 : 80);
-      if (key && (!info.titlesByKey[key] || info.titlesByKey[key] < score)) info.titlesByKey[key] = score;
+      var keys = [compact(baseTitle(text))];
+      var simplified = compact(baseTitle(toSimplified(text)));
+      if (simplified && simplified !== keys[0]) keys.push(simplified);
+      for (var k = 0; k < keys.length; k++) {
+        var key = keys[k];
+        if (key && (!info.titlesByKey[key] || info.titlesByKey[key] < score)) info.titlesByKey[key] = score;
+      }
     }
   }
 
@@ -5903,6 +6093,7 @@
         (args.absolute ? '绝对第 ' + args.episode + ' 集' : 'S' + args.season + 'E' + args.episode));
 
       var info = await tmdbInfo(args.tmdbId);
+      await augmentTitles(info);
       indexTitles(info);
       var want = makeWant(args, info);
       var wantFallback = want.mapped ? { season: null, episode: args.episode, absolute: true, mapped: false } : null;
