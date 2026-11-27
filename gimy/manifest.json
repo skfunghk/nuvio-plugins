@@ -9,7 +9,7 @@
       "name": "Gimy TV",
       "description": "Gimy TV 第三方线路：按 TMDB 片名匹配华语剧集/电影，m3u8 直链；片名做繁简/异体归一，集数用 ani.zip 坐标。",
       "version": "1.1.0",
-      "filename": "gimy/gimy.js",
+      "filename": "gimy.js",
       "supportedTypes": [
         "movie",
         "tv"
