@@ -41,7 +41,7 @@
 (function () {
   'use strict';
 
-  var VERSION = '0.1.0';
+  var VERSION = '0.1.1';
   var TAG = '[kanju]';
 
   // Nuvio kills a provider after 60 s in both runtimes; stop starting new work before that.
@@ -639,6 +639,25 @@
   var PART_FIRST = /^(?:上|上部|上集|上篇|前篇|前传|前集)$/;
   var PART_SECOND = /^(?:下|下部|下集|下篇|后篇|后传|后集)$/;
 
+  // 繁→简 + 常见异体字：站点常写「隱祕的角落」，TMDB 写「隐秘的角落」，不折叠就永远对不上。
+  var VARIANT_PAIRS = ["擊击", "進进", "龍龙", "劍剑", "戰战", "學学", "園园", "貓猫", "戀恋", "愛爱", "時时", "間间", "頭头", "們们", "說说", "劇剧", "場场", "鬥斗", "靈灵", "獸兽", "島岛", "夢梦", "藥药", "銀银", "車车", "軍军", "隊队", "門门", "開开", "關关", "麼么", "樣样", "這这", "來来", "對对", "無无", "與与", "為为", "業业", "樂乐", "從从", "會会", "還还", "讓让", "記记", "憶忆", "風风", "雲云", "電电", "話话", "誰谁", "殺杀", "復复", "興兴", "傳传", "讀读", "書书", "寫写", "體体", "點点", "兩两", "幾几", "內内", "別别", "則则", "剛刚", "動动", "勝胜", "勢势", "區区", "醫医", "華华", "萬万", "葉叶", "藝艺", "處处", "號号", "蟲虫", "術术", "補补", "裝装", "見见", "觀观", "規规", "視视", "覺觉", "訂订", "計计", "訓训", "設设", "試试", "詩诗", "該该", "認认", "語语", "誠诚", "誤误", "請请", "諾诺", "課课", "調调", "談谈", "論论", "證证", "護护", "變变", "贊赞", "貝贝", "負负", "財财", "貨货", "販贩", "責责", "貴贵", "買买", "費费", "資资", "賽赛", "趕赶", "軌轨", "轉转", "輪轮", "農农", "遠远", "選选", "遺遗", "郵邮", "鄉乡", "釋释", "鑑鉴", "長长", "閃闪", "閉闭", "閒闲", "問问", "間间", "閨闺", "陣阵", "陰阴", "陸陆", "陽阳", "隨随", "險险", "隱隐", "雙双", "雜杂", "難难", "霧雾", "靜静", "響响", "頁页", "頂顶", "項项", "順顺", "須须", "預预", "頓顿", "領领", "頻频", "顆颗", "題题", "願愿", "類类", "顯显", "飛飞", "養养", "餘余", "馬马", "驗验", "髮发", "魚鱼", "鳥鸟", "麗丽", "黃黄", "齊齐", "齒齿", "齡龄", "麵面", "祕秘", "裡里", "裏里", "週周", "臺台", "佈布", "佔占", "傢家", "峯峰", "綫线", "鷄鸡", "敎教", "於于", "祇只", "牠它", "啟启", "兇凶", "嚮向", "囪囱", "喫吃", "夥伙", "衆众", "跡迹", "鵰雕"];
+  var VARIANT_MAP = null;
+  function foldVariants(value) {
+    if (!VARIANT_MAP) {
+      VARIANT_MAP = {};
+      for (var i = 0; i < VARIANT_PAIRS.length; i++) {
+        var pair = VARIANT_PAIRS[i];
+        if (pair.length === 2) VARIANT_MAP[pair.charAt(0)] = pair.charAt(1);
+      }
+    }
+    var out = '';
+    for (var j = 0; j < value.length; j++) {
+      var ch = value.charAt(j);
+      out += VARIANT_MAP[ch] || ch;
+    }
+    return out;
+  }
+
   function fold(text) {
     var value = String(text || '');
     value = value.replace(/&#x([0-9a-f]+);/gi, function (_, code) { return String.fromCodePoint(parseInt(code, 16)); })
@@ -654,7 +673,7 @@
       else if (code === 0x3000) code = 32;
       out += String.fromCharCode(code);
     }
-    return out.toLowerCase();
+    return foldVariants(out).toLowerCase();
   }
 
   function compact(text) {

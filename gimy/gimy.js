@@ -17,7 +17,7 @@
  * Promise chains only: older Nuvio builds reject asynchronous functions in dynamically loaded code.
  */
 (function () {
-  var VERSION = '1.0.0';
+  var VERSION = '1.1.0';
   var TAG = '[gimy]';
   var SITE = 'https://gimytv.io';
   var TMDB_API = 'https://api.themoviedb.org/3';
@@ -262,6 +262,31 @@
     return scored[0].card;
   }
 
+  /** ani.zip：TMDB id → 片名（含 zh-Hant）与「第几季第几集 → 绝对第几集」的反查表 */
+  function anizipByTmdb(id) {
+    var url = ANIZIP_API + '?themoviedb_id=' + encodeURIComponent(id);
+    return httpText(url, { 'User-Agent': UA, Accept: 'application/json' }).then(function (result) {
+      if (!result.ok) return null;
+      var data = null;
+      try { data = JSON.parse(result.body); } catch (e) { return null; }
+      if (!data) return null;
+      var titles = [];
+      var map = data.titles || {};
+      ['zh-Hant', 'zh-Hans', 'zh-TW', 'ja', 'x-jat'].forEach(function (key) {
+        if (map[key]) titles.push({ text: String(map[key]), rank: 2 });
+      });
+      var absolute = {};
+      var episodes = data.episodes || {};
+      for (var key in episodes) {
+        if (!Object.prototype.hasOwnProperty.call(episodes, key)) continue;
+        var row = episodes[key];
+        if (!row || row.seasonNumber == null || row.episodeNumber == null) continue;
+        absolute[row.seasonNumber + ':' + row.episodeNumber] = Number(key);
+      }
+      return { titles: titles, absolute: absolute };
+    }).catch(function () { return null; });
+  }
+
   function absoluteNumber(seasons, season, episode) {
     var sum = 0;
     for (var i = 0; i < (seasons || []).length; i++) {
@@ -326,7 +351,16 @@
       .then(function (data) {
         var titles = tmdbTitles(data, isMovie);
         if (!titles.length) throw fail('NOT_FOUND', 'TMDB 没有这部电影/剧集的片名');
-        var absolute = isMovie ? 1 : absoluteNumber(data.seasons, wantedSeason, wantedEpisode);
+        // ani.zip 补两样：zh-Hant 片名（站点常写繁体）与「第几季第几集 → 绝对第几集」的坐标
+        var zip = isMovie ? Promise.resolve(null) : anizipByTmdb(id);
+        return zip.then(function (extra) {
+          if (extra && extra.titles.length) {
+            var seen = {};
+            titles.forEach(function (t) { seen[t.text] = true; });
+            extra.titles.forEach(function (t) { if (!seen[t.text]) { seen[t.text] = true; titles.push(t); } });
+          }
+          var mapped = extra && extra.absolute ? extra.absolute[wantedSeason + ':' + wantedEpisode] : null;
+          var absolute = isMovie ? 1 : (mapped != null ? mapped : absoluteNumber(data.seasons, wantedSeason, wantedEpisode));
         emit('log', 'v' + VERSION + ' id=' + id + ' ' + (isMovie ? 'movie' : 'S' + wantedSeason + 'E' + wantedEpisode + '（绝对 ' + absolute + '）') + ' 片名 ' + titles.slice(0, 3).map(function (t) { return t.text; }).join(' / '));
 
         var queue = titles.slice(0, MAX_TITLES);
@@ -369,6 +403,7 @@
             return [];
           }
           return [stream];
+        });
         });
       })
       .catch(function (error) {
