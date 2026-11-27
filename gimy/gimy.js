@@ -17,7 +17,7 @@
  * Promise chains only: older Nuvio builds reject asynchronous functions in dynamically loaded code.
  */
 (function () {
-  var VERSION = '1.1.0';
+  var VERSION = '1.1.1';
   var TAG = '[gimy]';
   var SITE = 'https://gimytv.io';
   var TMDB_API = 'https://api.themoviedb.org/3';
@@ -164,6 +164,11 @@
       .replace(/[\[【(（][^\]】)）]{0,20}[\]】)）]/g, ' ');
   }
 
+  /** gimy 的条目名常是「中文名/原名」或「中文名 原名」，取第一段做比较 */
+  function primaryName(name) {
+    return String(name || '').split(/[\/／|｜]/)[0];
+  }
+
   function scoreTitle(name, titles) {
     var key = norm(name);
     var base = norm(baseTitle(name));
@@ -247,10 +252,20 @@
     if (!candidates.length) return null;
     var wanted = titles.map(function (t) { return norm(baseTitle(t.text)); }).filter(function (v) { return v.length >= 2; });
     var scored = candidates.map(function (card) {
-      return { card: card, score: scoreTitle(card.name, titles), base: norm(baseTitle(card.name)) };
+      var whole = norm(baseTitle(card.name));
+      var first = norm(baseTitle(primaryName(card.name)));
+      var score = scoreTitle(card.name, titles);
+      var exact = wanted.indexOf(whole) !== -1 || wanted.indexOf(first) !== -1;
+      // 片名后面接的是原名/外语名时（「魷魚遊戲 第一季 오징어 게임」），整串不会相等。
+      // 这种情况只在条目带**明确同季标记**时才认，避免把「進擊的巨人 LOST GIRLS」当成第一季。
+      var contains = wanted.some(function (w) {
+        return w.length >= 2 && (first.indexOf(w) === 0 || whole.indexOf(w) === 0);
+      });
+      var sameSeason = wantedSeason != null && seasonOf(card.name) === wantedSeason;
+      if (exact) score = Math.max(score, 95);
+      return { card: card, score: score, ok: exact || (contains && sameSeason) };
     }).filter(function (row) {
-      if (!row.base || wanted.indexOf(row.base) === -1) return false;
-      return row.score >= 65;
+      return row.ok && row.score >= 65;
     });
     if (!scored.length) return null;
     scored.sort(function (a, b) {
