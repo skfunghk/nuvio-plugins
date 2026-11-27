@@ -60,6 +60,24 @@
         "mp4"
       ],
       "hasSettings": false
+    },
+    {
+      "id": "gimy",
+      "name": "Gimy TV",
+      "description": "Gimy TV 第三方线路：按 TMDB 片名匹配华语剧集/电影，返回 m3u8 直链（繁简与异体字已归一）。",
+      "version": "1.0.0",
+      "filename": "gimy/gimy.js",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "zh"
+      ],
+      "formats": [
+        "m3u8"
+      ]
     }
   ]
 }

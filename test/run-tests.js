@@ -672,7 +672,7 @@ test('repository: both manifests follow the shape the Nuvio hosts parse and poin
   };
 
   checkSingle('kanju/manifest.json', ['kanju-official']);
-  checkRepository('manifest.json', ['kanju', 'kazumi', 'kazumi-experimental']);
+  checkRepository('manifest.json', ['kanju', 'kazumi', 'kazumi-experimental', 'gimy']);
   checkRepository('kazumi/manifest.json', ['kazumi', 'kazumi-experimental']);
   for (const file of ['README.md', 'docs/nuvio-plugin-contract.md']) assert.ok(existsSync(join(ROOT, file)), file + ' missing');
 });
